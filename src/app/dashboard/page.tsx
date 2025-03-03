@@ -1,10 +1,17 @@
 "use client"
 import "../globals.css";
 import React, { useState} from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { addTransactionAsync } from "@/redux/transactionActions";
+import { AppDispatch, RootState } from "@/redux/store";
 
 export default function Dashboard() {
+    const dispatch = useDispatch<AppDispatch>();
+    const transactions = useSelector((state: RootState) => state.transactions.transactions);
     const [selectedTypeKey, setSelectedTypeKey] = useState(1);
     const [selectedCategoryKey, setSelectedCategoryKey] = useState(1);
+    const [amount, setAmount] = useState("");
+    const [comment, setComment] = useState("");
 
     const selectOptions = [
         { id: 1, value: "Дохід" }, 
@@ -23,6 +30,31 @@ export default function Dashboard() {
 
     const selectedCategories =
     selectedTypeKey === 1 ? selectCategoriesIncome : selectCategoriesSpending;
+
+    const handleAddTransaction = () => {
+        if (!amount || !selectedCategoryKey) {
+          alert("Заповніть всі поля!");
+          return;
+    }
+
+    const typeMap: Record<number, "Дохід" | "Витрати"> = {
+        1: "Дохід",
+        2: "Витрати",
+      };
+
+    const transaction = {
+        type: typeMap[selectedTypeKey],
+        amount: Number(amount),
+        category: selectedCategories.find((category) => category.id === selectedCategoryKey)?.value || "",
+        date: new Date(),
+        note: comment,
+        userId: "userId_1",
+      };
+  
+      dispatch(addTransactionAsync(transaction));
+      setAmount("");
+      setComment("");
+    };
 
     return(
         <>
@@ -61,13 +93,19 @@ export default function Dashboard() {
                 </label>
                 <label className="text-base">
                     Сума 
-                   <input className="p-2 border rounded-md m-2 w-[6vw]"></input>
+                   <input className="p-2 border rounded-md m-2 w-[6vw]"
+                   type = "number"
+                   value= {amount}
+                   onChange={(e) => setAmount(e.target.value)}></input>
                 </label>
                 <label className="text-base">
                     Коментар
-                   <input className="p-2 border rounded-md m-2 w-[35vw]" maxLength={40}></input>
+                   <input className="p-2 border rounded-md m-2 w-[35vw]" maxLength={40}
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}></input>
                 </label>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                onClick={handleAddTransaction}>
                     Додати
                 </button>
             </div>
@@ -82,10 +120,14 @@ export default function Dashboard() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td className="p-2 border">$2000</td>
-                                <td className="p-2 border">Зарплата</td>
-                            </tr>
+                        {transactions
+                            .filter((t) => t.type === "Дохід")
+                            .map((transaction) => (
+                                <tr key={transaction.id}>
+                                <td className="p-2 border">{transaction.amount}</td>
+                                <td className="p-2 border">{transaction.category}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
@@ -99,10 +141,14 @@ export default function Dashboard() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="p-2 border">$500</td>
-                            <td className="p-2 border">Техніка</td>
-                        </tr>
+                    {transactions
+                            .filter((t) => t.type === "Витрати")
+                            .map((transaction) => (
+                                <tr key={transaction.id}>
+                                <td className="p-2 border">{transaction.amount}</td>
+                                <td className="p-2 border">{transaction.category}</td>
+                                </tr>
+                            ))}
                     </tbody>
                     </table>
                 </div>

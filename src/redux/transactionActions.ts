@@ -1,5 +1,6 @@
+"use client"
 import { addTransaction } from "./transactionSlice";
-import { addTransactionToFirestore } from "@/firebase/firebaseApi";\
+import { addTransactionToFirestore } from "@/firebase/firebaseApi";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch } from "./store";
 

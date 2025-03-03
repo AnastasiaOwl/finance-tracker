@@ -1,11 +1,14 @@
-import { db } from "./firebaseConfig";
+"use client"
+import { db } from "@/firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { Transaction } from "@/redux/transactionSlice";
 
 export const addTransactionToFirestore = async (transaction: Transaction) => {
+  const userId = "testUser_123";
+
   try {
     const docRef = await addDoc(
-      collection(db, "users", transaction.userId, "transactions"),
+      collection(db, "users", userId, "transactions"),
       transaction
     );
     console.log("✅ Transaction added with ID:", docRef.id);

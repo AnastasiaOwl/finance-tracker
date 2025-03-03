@@ -1,6 +1,7 @@
+"use client"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Transaction {
+export interface Transaction {
   id?: string;
   type: "Дохід" | "Витрати";
   amount: number;
