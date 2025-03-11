@@ -1,6 +1,6 @@
 "use client"
 import { db } from "@/firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Transaction } from "@/redux/transactionSlice";
 
 export const addTransactionToFirestore = async (transaction: Transaction) => {
@@ -18,3 +18,32 @@ export const addTransactionToFirestore = async (transaction: Transaction) => {
     throw error;
   }
 };
+
+export const deleteTransactionFirestore = async (transactionId: string) =>{
+  const userId = "testUser_123";
+    try {
+      await deleteDoc(doc(db, "users", userId, "transactions", transactionId));
+      console.log("Transaction deleting with ID:", transactionId);
+    } catch (error) {
+      console.error("❌ Error deleting transaction:", error);
+      throw error;
+    }
+}
+
+export const fetchTransactions = async (): Promise<Transaction[]>=>{
+  const userId = "testUser_123";
+
+  try {
+    const querySnapshot = await getDocs(collection(db, "users", userId, "transactions"));
+    const transactions: Transaction[] = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Transaction[];
+    
+    console.log("✅ Transactions fetched:", transactions);
+    return transactions;
+  } catch (error) {
+    console.error("❌ Error fetching transactions:", error);
+    return [];
+  }
+}
