@@ -2,8 +2,9 @@
 import "../globals.css";
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { addTransactionAsync, fetchTransactionAsync, deleteTransactionAsync } from "@/redux/transactionActions";
+import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
 import { AppDispatch, RootState } from "@/redux/store";
+import TransactionTable from "@/components/TransactionTable";
 
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
@@ -61,10 +62,6 @@ export default function Dashboard() {
         setComment("");
     };
 
-    const handleDeleteTransaction = (transactionId: string) => {
-        dispatch(deleteTransactionAsync(transactionId));
-    }
-
     const toggleCategoryExpand = (category: string) => {
         setExpandedCategories(prev => ({
             ...prev,
@@ -72,7 +69,9 @@ export default function Dashboard() {
         }));
     };
 
-    const groupedTransactions = transactions.reduce((acc, transaction) => {
+    const groupedIncome = transactions
+    .filter((t) => t.type === "Дохід")
+    .reduce((acc, transaction) => {
         if (!acc[transaction.category]) {
             acc[transaction.category] = { total: 0, items: [] };
         }
@@ -80,6 +79,18 @@ export default function Dashboard() {
         acc[transaction.category].items.push(transaction);
         return acc;
     }, {} as { [key: string]: { total: number; items: any[] } });
+
+    const groupedExpenses = transactions
+        .filter((t) => t.type === "Витрати")
+        .reduce((acc, transaction) => {
+            if (!acc[transaction.category]) {
+                acc[transaction.category] = { total: 0, items: [] };
+            }
+            acc[transaction.category].total += transaction.amount;
+            acc[transaction.category].items.push(transaction);
+            return acc;
+        }, {} as { [key: string]: { total: number; items: any[] } });
+
 
     return(
         <>
@@ -135,94 +146,20 @@ export default function Dashboard() {
                 </button>
             </div>
             <div className="flex gap-6 p-4">
-                <div className="w-1/2 bg-white shadow-md rounded-lg p-4">
-                    <h2 className="text-lg font-bold mb-2 place-self-center">Доходи</h2>
-                    <table className="w-full border-collapse border border-gray-300">
-                        <thead>
-                            <tr className="bg-green-500 text-white">
-                                <th className="p-2 border">Сума</th>
-                                <th className="p-2 border">Категорія</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {transactions
-                            .filter((t) => t.type === "Дохід")
-                            .map((transaction) => (
-                                <tr key={transaction.id}>
-                                <td className="p-2 border">{transaction.amount}</td>
-                                <td className="p-2 border">{transaction.category}</td> 
-                                <td className="p-2 border text-center">
-                                    <button
-                                                className="bg-gray-400 text-white px-2 py-1 rounded hover:bg-gray-600"
-                                                onClick={() => toggleCategoryExpand(transaction.category)}
-                                            >
-                                                {expandedCategories[transaction.category] ? "🔼" : "🔽"}
-                                    </button>
-                                </td>
-                                {expandedCategories[transaction.category] &&
-                                        groupedTransactions[transaction.category].items.map(transaction => (
-                                            <tr key={transaction.id} className="bg-gray-100">
-                                                <td className="p-2 border">{transaction.amount}</td>
-                                                <td className="p-2 border">{transaction.note}</td>
-                                                <td className="p-2 border text-center">
-                                                <button
-                                                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
-                                                    onClick={() => handleDeleteTransaction(transaction.id!)}
-                                                >
-                                                    -
-                                                </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                <div className="w-1/2 bg-white shadow-md rounded-lg p-4">
-                    <h2 className="text-lg font-bold mb-2 place-self-center">Витрати</h2>
-                    <table className="w-full border-collapse border border-gray-300">
-                    <thead>
-                        <tr className="bg-red-500 text-white">
-                            <th className="p-2 border">Сума</th>
-                            <th className="p-2 border">Категорія</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {transactions
-                            .filter((t) => t.type === "Витрати")
-                            .map((transaction) => (
-                                <tr key={transaction.id}>
-                                <td className="p-2 border">{transaction.amount}</td>
-                                <td className="p-2 border">{transaction.category}</td>
-                                <td className="p-2 border text-center">
-                                    <button
-                                                className="bg-gray-400 text-white px-2 py-1 rounded hover:bg-gray-600"
-                                                onClick={() => toggleCategoryExpand(transaction.category)}
-                                            >
-                                                {expandedCategories[transaction.category] ? "🔼" : "🔽"}
-                                    </button>
-                                </td>
-                                {expandedCategories[transaction.category] &&
-                                        groupedTransactions[transaction.category].items.map(transaction => (
-                                            <tr key={transaction.id} className="bg-gray-100">
-                                                <td className="p-2 border">{transaction.amount}</td>
-                                                <td className="p-2 border">{transaction.note}</td>
-                                                <td className="p-2 border text-center">
-                                                <button
-                                                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700"
-                                                    onClick={() => handleDeleteTransaction(transaction.id!)}
-                                                >
-                                                    -
-                                                </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                </tr>
-                            ))}
-                    </tbody>
-                    </table>
-                </div>
+                    <TransactionTable 
+                        title="Дохід" 
+                        groupedTransactions={groupedIncome} 
+                        expandedCategories={expandedCategories} 
+                        toggleCategoryExpand={toggleCategoryExpand} 
+                        color="bg-green-500"
+                    />
+                    <TransactionTable 
+                        title="Витрати" 
+                        groupedTransactions={groupedExpenses} 
+                        expandedCategories={expandedCategories} 
+                        toggleCategoryExpand={toggleCategoryExpand} 
+                        color="bg-red-500"
+                    />
             </div>
         </main>
         </>
