@@ -31,7 +31,8 @@ export default function Dashboard() {
 
     const selectCategoriesSpending=[
         {id: 1, value: "Техніка"},
-        {id: 2, value: "Додати свою..."}
+        {id: 2, value: "Медицина"},
+        {id: 3, value: "Додати свою..."}
     ]
 
     const selectedCategories =
@@ -80,6 +81,11 @@ export default function Dashboard() {
         return acc;
     }, {} as { [key: string]: { total: number; items: any[] } });
 
+    const totalIncome = Object.values(groupedIncome).reduce(
+        (sum, category) => sum + category.total,
+        0
+    );
+
     const groupedExpenses = transactions
         .filter((t) => t.type === "Витрати")
         .reduce((acc, transaction) => {
@@ -91,6 +97,10 @@ export default function Dashboard() {
             return acc;
         }, {} as { [key: string]: { total: number; items: any[] } });
 
+    const totalExpenses = Object.values(groupedExpenses).reduce(
+        (sum, category) => sum + category.total,
+        0
+    );
 
     return(
         <>
@@ -151,6 +161,7 @@ export default function Dashboard() {
                         groupedTransactions={groupedIncome} 
                         expandedCategories={expandedCategories} 
                         toggleCategoryExpand={toggleCategoryExpand} 
+                        totalSum = {totalIncome}
                         color="bg-green-500"
                     />
                     <TransactionTable 
@@ -158,6 +169,7 @@ export default function Dashboard() {
                         groupedTransactions={groupedExpenses} 
                         expandedCategories={expandedCategories} 
                         toggleCategoryExpand={toggleCategoryExpand} 
+                        totalSum = {totalExpenses}
                         color="bg-red-500"
                     />
             </div>
