@@ -3,6 +3,8 @@ import "../globals.css";
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
+import { addCategoryAsync} from "@/redux/categoryActions";
+import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import TransactionTable from "@/components/TransactionTable";
 
@@ -12,6 +14,7 @@ export default function Dashboard() {
     const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
     const [selectedTypeKey, setSelectedTypeKey] = useState(1);
     const [selectedCategoryKey, setSelectedCategoryKey] = useState(1);
+    const [customCategory,setCustomCategory] = useState<string>("");
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
 
@@ -26,29 +29,44 @@ export default function Dashboard() {
 
     const selectCategoriesIncome=[
         {id: 1, value: "Зарплатня"},
-        {id: 2, value: "Додати свою..."}
+        {id: 40, value: "Додати свою..."}
     ]
 
     const selectCategoriesSpending=[
         {id: 1, value: "Техніка"},
         {id: 2, value: "Медицина"},
-        {id: 3, value: "Додати свою..."}
+        {id: 40, value: "Додати свою..."}
     ]
 
     const selectedCategories =
     selectedTypeKey === 1 ? selectCategoriesIncome : selectCategoriesSpending;
+
+    const handleAddCategory = () =>{
+        if (!customCategory) {
+            alert("Заповніть поле!");
+            return;
+        }
+        const typeMap: Record<number, "Дохід" | "Витрати"> = {
+            1: "Дохід",
+            2: "Витрати",
+          };
+        const category = {
+            name: customCategory,
+            type: typeMap[selectedTypeKey],
+        };
+        dispatch(addCategoryAsync(category));
+        setCustomCategory("");
+    }
 
     const handleAddTransaction = () => {
             if (!amount || !selectedCategoryKey) {
             alert("Заповніть всі поля!");
             return;
         }
-
         const typeMap: Record<number, "Дохід" | "Витрати"> = {
             1: "Дохід",
             2: "Витрати",
         };
-
         const transaction = {
             type: typeMap[selectedTypeKey],
             amount: Number(amount),
@@ -57,7 +75,6 @@ export default function Dashboard() {
             note: comment,
             userId: "userId_1",
         };
-  
         dispatch(addTransactionAsync(transaction));
         setAmount("");
         setComment("");
@@ -79,7 +96,7 @@ export default function Dashboard() {
         acc[transaction.category].total += transaction.amount;
         acc[transaction.category].items.push(transaction);
         return acc;
-    }, {} as { [key: string]: { total: number; items: any[] } });
+    }, {} as { [key: string]: { total: number; items: Transaction[] } });
 
     const totalIncome = Object.values(groupedIncome).reduce(
         (sum, category) => sum + category.total,
@@ -95,7 +112,7 @@ export default function Dashboard() {
             acc[transaction.category].total += transaction.amount;
             acc[transaction.category].items.push(transaction);
             return acc;
-        }, {} as { [key: string]: { total: number; items: any[] } });
+        }, {} as { [key: string]: { total: number; items: Transaction[] } });
 
     const totalExpenses = Object.values(groupedExpenses).reduce(
         (sum, category) => sum + category.total,
@@ -135,7 +152,18 @@ export default function Dashboard() {
                             {option.value}
                         </option>
                         ))}
-                        </select>
+                    </select>
+                    {selectedCategoryKey === 40 && (
+                        <div>
+                            <input type="text"
+                            placeholder="введіть свою категорію"
+                            value={customCategory}
+                            onChange={(e)=>setCustomCategory(e.target.value)}
+                            className="p-2 border rounded-md">
+                            </input>
+                            <button onClick={handleAddCategory}>+</button>
+                        </div>
+                            )}
                 </label>
                 <label className="text-base">
                     Сума 

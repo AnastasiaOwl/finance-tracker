@@ -2,6 +2,40 @@
 import { db } from "@/firebase/firebaseConfig";
 import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Transaction } from "@/redux/transactionSlice";
+import {Category} from "@/redux/categorySlice";
+
+export const addCategoryToFirestore = async (category: Category) => {
+  const userId = "testUser_123";
+  try {
+    const docRef = await addDoc(
+      collection(db, "users", userId, "categories"),
+      category
+    );
+    console.log("✅ Category added with ID:", docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error("❌ Error adding category:", error);
+    throw error;
+  }
+};
+
+export const fetchCategories = async (): Promise<Category[]>=>{
+  const userId = "testUser_123";
+
+  try {
+    const querySnapshot = await getDocs(collection(db, "users", userId, "categories"));
+    const categories: Category[] = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Category[];
+    
+    console.log("✅ Categories fetched:", categories);
+    return categories;
+  } catch (error) {
+    console.error("❌ Error fetching categories:", error);
+    return [];
+  }
+}
 
 export const addTransactionToFirestore = async (transaction: Transaction) => {
   const userId = "testUser_123";

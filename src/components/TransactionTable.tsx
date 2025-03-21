@@ -30,17 +30,17 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             <h2 className={`text-lg font-bold mb-2 text-center`}>{title}</h2>
             <table className="w-full border-collapse border border-gray-300">
                 <thead>
-                    <tr className={`${color} text-white`}>
-                        <th className="p-2 border">Сума</th>
-                        <th className="p-2 border">Категорія</th>
+                    <tr className={`${color} text-white border-gray-200`}>
+                        <th className="p-2 border border-gray-500">Сума</th>
+                        <th className="p-2 border border-gray-500">Категорія</th>
                     </tr>
                 </thead>
                 <tbody>
                     {Object.entries(groupedTransactions).map(([category, data]) => (
                         <React.Fragment key={category}>
                             <tr>
-                                <td className="p-2 border">{title === "Дохід" ? `+${data.total}` : `-${data.total}`}</td>
-                                <td className="p-2 border">
+                                <td className="p-2 border border-gray-500">{title === "Дохід" ? `+${data.total}` : `-${data.total}`}</td>
+                                <td className="p-2 border border-gray-500">
                                     <div>{category}</div>
                                     <div className="place-self-end">
                                         <button
@@ -59,8 +59,8 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                             {expandedCategories[category] &&
                                 data.items.map(transaction => (
                                     <tr key={transaction.id} className="bg-gray-100">
-                                        <td className="p-2 border">{title === "Дохід" ? `+${transaction.amount}` : `-${transaction.amount}`}</td>
-                                        <td className="p-2 border">
+                                        <td className="p-2 border border-gray-300">{title === "Дохід" ? `+${transaction.amount}` : `-${transaction.amount}`}</td>
+                                        <td className="p-2 border border-gray-300">
                                             <div className="flex justify-between">
                                                 {transaction.note}
                                                 <button
@@ -77,13 +77,13 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     ))}
                     <tr>
                         <td
-                            className={`p-2 border text-lg font-bold 
+                            className={`p-2 border border-gray-500 text-lg font-bold 
                                 ${title === "Дохід" ? "bg-green-500" : "bg-red-500"}
                             `}
                         >
                             {title === "Дохід" ? `+${totalSum}` : `-${totalSum}`}
                         </td>
-                        <td className="p-2 border text-lg font-bold">
+                        <td className="p-2 border border-gray-500 text-lg font-bold">
                             Загальна сума
                         </td>
                     </tr>
