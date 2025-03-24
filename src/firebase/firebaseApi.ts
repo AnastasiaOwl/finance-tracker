@@ -1,16 +1,22 @@
 "use client"
 import { db } from "@/firebase/firebaseConfig";
-import { collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, setDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Transaction } from "@/redux/transactionSlice";
 import {Category} from "@/redux/categorySlice";
 
 export const addCategoryToFirestore = async (category: Category) => {
   const userId = "testUser_123";
   try {
-    const docRef = await addDoc(
+    const randomId = Math.floor(Math.random() * 1_000_000) + 1;
+    const docRef = doc(
       collection(db, "users", userId, "categories"),
-      category
+      randomId.toString()
     );
+    await setDoc(docRef, {
+      id: randomId,
+      name: category.name,
+      type: category.type,
+    });
     console.log("✅ Category added with ID:", docRef.id);
     return docRef.id;
   } catch (error) {
@@ -24,11 +30,14 @@ export const fetchCategories = async (): Promise<Category[]>=>{
 
   try {
     const querySnapshot = await getDocs(collection(db, "users", userId, "categories"));
-    const categories: Category[] = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Category[];
-    
+    const categories: Category[] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: data.id as number,
+        name: data.name,
+        type: data.type,
+      };
+    });
     console.log("✅ Categories fetched:", categories);
     return categories;
   } catch (error) {

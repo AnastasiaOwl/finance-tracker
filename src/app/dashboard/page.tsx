@@ -3,7 +3,7 @@ import "../globals.css";
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
-import { addCategoryAsync} from "@/redux/categoryActions";
+import { addCategoryAsync, fetchCategoryAsync} from "@/redux/categoryActions";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import TransactionTable from "@/components/TransactionTable";
@@ -11,15 +11,19 @@ import TransactionTable from "@/components/TransactionTable";
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
     const transactions = useSelector((state: RootState) => state.transactions.transactions);
+    const categories = useSelector((state: RootState) => state.categories.categories);
     const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
     const [selectedTypeKey, setSelectedTypeKey] = useState(1);
-    const [selectedCategoryKey, setSelectedCategoryKey] = useState(1);
+    const [selectedCategoryKey, setSelectedCategoryKey] = useState<number>(1);
     const [customCategory,setCustomCategory] = useState<string>("");
+    const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
 
+
     useEffect(() => {
         dispatch(fetchTransactionAsync());
+        dispatch(fetchCategoryAsync()); 
     }, [dispatch]);
 
     const selectOptions = [
@@ -27,19 +31,18 @@ export default function Dashboard() {
         { id: 2, value: "Витрати"}, 
     ];
 
-    const selectCategoriesIncome=[
-        {id: 1, value: "Зарплатня"},
-        {id: 40, value: "Додати свою..."}
-    ]
-
-    const selectCategoriesSpending=[
-        {id: 1, value: "Техніка"},
-        {id: 2, value: "Медицина"},
-        {id: 40, value: "Додати свою..."}
-    ]
-
-    const selectedCategories =
-    selectedTypeKey === 1 ? selectCategoriesIncome : selectCategoriesSpending;
+    const filteredCategories = categories
+    .filter((cat) => cat.type === (selectedTypeKey === 1 ? "Дохід" : "Витрати"))
+    .map((cat) => ({
+      id: cat.id, 
+      value: cat.name,
+    }));
+  
+    
+    const selectedCategories = [
+        ...filteredCategories,
+        { id: 0, value: "Додати свою..." }
+    ];
 
     const handleAddCategory = () =>{
         if (!customCategory) {
@@ -125,7 +128,7 @@ export default function Dashboard() {
             Вересень
         </header>
         <main>
-            <div className="bg-gray-200 w-[88vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
+            <div className="bg-gray-200 w-[95vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
                 <label className="text-base">
                     Тип
                         <select
@@ -142,28 +145,54 @@ export default function Dashboard() {
                 </label>
                 <label className="text-base">
                     Категорія 
-                    <select
+                    {!showCustomInput ? (
+                        <select
                             value={selectedCategoryKey}
-                            onChange={(e) => setSelectedCategoryKey(parseInt(e.target.value))}
+                            onChange={(e) => {
+                            const newValue = parseInt(e.target.value, 10);
+                            if (newValue === 0) {
+                                setShowCustomInput(true);
+                            } else {
+                                setSelectedCategoryKey(newValue);
+                            }
+                            }}
                             className="p-2 border rounded-md m-2"
                         >
-                        {selectedCategories.map((option) => (
-                        <option key={option.id} value={option.id}>
-                            {option.value}
-                        </option>
-                        ))}
-                    </select>
-                    {selectedCategoryKey === 40 && (
-                        <div>
-                            <input type="text"
+                            {selectedCategories.map((option) => (
+                            <option key={option.id} value={option.id}>
+                                {option.value}
+                            </option>
+                            ))}
+                        </select>
+                        ) : (
+                        <div className="inline-flex items-end gap-2 m-2">
+                            <input
+                            type="text"
                             placeholder="введіть свою категорію"
                             value={customCategory}
-                            onChange={(e)=>setCustomCategory(e.target.value)}
-                            className="p-2 border rounded-md">
-                            </input>
-                            <button onClick={handleAddCategory}>+</button>
+                            onChange={(e) => setCustomCategory(e.target.value)}
+                            className="p-2 border rounded-md"
+                            style={{ width: "190px" }}
+                            />
+                            <div className="flex flex-col items-end gap-2">
+                                <button
+                                    onClick={() => {
+                                    setShowCustomInput(false);
+                                    setCustomCategory("");
+                                    }}
+                                    className="bg-red-600 text-white text-xs px-1 py-0.3 rounded hover:bg-red-700"
+                                >
+                                    X
+                                </button>
+                                <button
+                                    onClick={handleAddCategory}
+                                    className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800"
+                                >
+                                    +
+                                </button>
+                                </div>
                         </div>
-                            )}
+                        )}
                 </label>
                 <label className="text-base">
                     Сума 
