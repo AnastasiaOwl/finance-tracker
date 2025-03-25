@@ -3,9 +3,27 @@ import { db } from "@/firebase/firebaseConfig";
 import { collection, addDoc, setDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { Transaction } from "@/redux/transactionSlice";
 import {Category} from "@/redux/categorySlice";
+import { auth } from "@/firebase/firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+
+export async function signUpWithEmail(email: string, password: string) {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log("User signed up:", userCredential.user.uid);
+    return userCredential.user;
+  }
+  
+export async function signInWithEmail(email: string, password: string) {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("User signed in:", userCredential.user.uid);
+    return userCredential.user;
+}
 
 export const addCategoryToFirestore = async (category: Category) => {
-  const userId = "testUser_123";
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
   try {
     const randomId = Math.floor(Math.random() * 1_000_000) + 1;
     const docRef = doc(
@@ -26,7 +44,11 @@ export const addCategoryToFirestore = async (category: Category) => {
 };
 
 export const fetchCategories = async (): Promise<Category[]>=>{
-  const userId = "testUser_123";
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
 
   try {
     const querySnapshot = await getDocs(collection(db, "users", userId, "categories"));
@@ -47,7 +69,11 @@ export const fetchCategories = async (): Promise<Category[]>=>{
 }
 
 export const addTransactionToFirestore = async (transaction: Transaction) => {
-  const userId = "testUser_123";
+   const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
 
   try {
     const docRef = await addDoc(
@@ -63,7 +89,11 @@ export const addTransactionToFirestore = async (transaction: Transaction) => {
 };
 
 export const deleteTransactionFirestore = async (transactionId: string) =>{
-  const userId = "testUser_123";
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
     try {
       await deleteDoc(doc(db, "users", userId, "transactions", transactionId));
       console.log("Transaction deleting with ID:", transactionId);
@@ -74,7 +104,11 @@ export const deleteTransactionFirestore = async (transactionId: string) =>{
 }
 
 export const fetchTransactions = async (): Promise<Transaction[]>=>{
-  const userId = "testUser_123";
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
 
   try {
     const querySnapshot = await getDocs(collection(db, "users", userId, "transactions"));

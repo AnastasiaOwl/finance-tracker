@@ -4,8 +4,6 @@ import { addCategoryToFirestore, fetchCategories} from "@/firebase/firebaseApi";
 import { Category } from "@/redux/categorySlice";
 import { AppDispatch } from "./store";
 
-// Inside addCategoryAsync:
-// categoryActions.ts
 export const addCategoryAsync =
   (category: Omit<Category, "id">) => 
   async (dispatch: AppDispatch) => {

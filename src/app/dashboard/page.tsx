@@ -156,7 +156,7 @@ export default function Dashboard() {
                                 setSelectedCategoryKey(newValue);
                             }
                             }}
-                            className="p-2 border rounded-md m-2"
+                            className="p-2 border rounded-md m-2 w-[14vw]"
                         >
                             {selectedCategories.map((option) => (
                             <option key={option.id} value={option.id}>
@@ -212,7 +212,7 @@ export default function Dashboard() {
                     Додати
                 </button>
             </div>
-            <div className="flex gap-6 p-4">
+            <div className="flex items-start gap-6 p-4">
                     <TransactionTable 
                         title="Дохід" 
                         groupedTransactions={groupedIncome} 

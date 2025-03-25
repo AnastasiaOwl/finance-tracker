@@ -5,6 +5,7 @@ import { deleteTransactionAsync } from "@/redux/transactionActions";
 import { Transaction } from "@/redux/transactionSlice";
 import collapseArrow from "../icons/collapse-arrow.png";
 import expandArrow from "../icons/expand-arrow.png";
+import { Timestamp } from "firebase/firestore";
 
 interface TransactionTableProps {
     title: string;
@@ -62,7 +63,13 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                                         <td className="p-2 border border-gray-300">{title === "Дохід" ? `+${transaction.amount}` : `-${transaction.amount}`}</td>
                                         <td className="p-2 border border-gray-300">
                                             <div className="flex justify-between">
-                                                {transaction.note}
+                                                <div className="flex flex-col">
+                                                    {transaction.note}
+                                                    <span className="text-grey-700 text-xs italic">  {transaction.date instanceof Timestamp
+                                                        ? transaction.date.toDate().toLocaleDateString()
+                                                        : "No date"}
+                                                    </span> 
+                                                </div>
                                                 <button
                                                     className="rounded place-self-end"
                                                     onClick={() => dispatch(deleteTransactionAsync(transaction.id!))}
