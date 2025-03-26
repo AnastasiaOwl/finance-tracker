@@ -4,7 +4,15 @@ import { collection, addDoc, setDoc, getDocs, deleteDoc, doc } from "firebase/fi
 import { Transaction } from "@/redux/transactionSlice";
 import {Category} from "@/redux/categorySlice";
 import { auth } from "@/firebase/firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+
+export async function signInWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  console.log("Signed in with Google:", result.user.uid);
+  return result.user;
+}
 
 export async function signUpWithEmail(email: string, password: string) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -16,6 +24,15 @@ export async function signInWithEmail(email: string, password: string) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("User signed in:", userCredential.user.uid);
     return userCredential.user;
+}
+
+export async function signOutUser(): Promise<void> {
+  try {
+    await signOut(auth);
+    console.log("✅ User signed out");
+  } catch (error) {
+    console.error("❌ Error signing out:", error);
+  }
 }
 
 export const addCategoryToFirestore = async (category: Category) => {

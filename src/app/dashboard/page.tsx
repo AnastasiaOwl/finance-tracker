@@ -2,11 +2,15 @@
 import "../globals.css";
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import { useRouter } from "next/navigation"; 
+import { signOutUser} from "@/firebase/firebaseApi"; 
 import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
 import { addCategoryAsync, fetchCategoryAsync} from "@/redux/categoryActions";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import TransactionTable from "@/components/TransactionTable";
+import logoutIcon from "@/icons/icons8-logout-50.png";
 
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +23,17 @@ export default function Dashboard() {
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
+      const router = useRouter();
 
+    const handleLogout = async (event: React.FormEvent) => {
+        event.preventDefault();
+        try {
+          await signOutUser();
+          router.push("/register");
+        } catch (error) {
+          console.error("Logout error:", error);
+        }
+      };
 
     useEffect(() => {
         dispatch(fetchTransactionAsync());
@@ -126,6 +140,13 @@ export default function Dashboard() {
         <>
         <header className="bg-black text-white py-4 vw-6 flex justify-between items-center w-full">
             Вересень
+            <button className="w-[2vw] h-[2vw] mr-[0.5vw]
+                              transition-transform 
+                              duration-300 
+                              hover:scale-110
+                              "
+                    onClick={handleLogout}><Image src={logoutIcon} alt="logout" />
+            </button>
         </header>
         <main>
             <div className="bg-gray-200 w-[95vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
