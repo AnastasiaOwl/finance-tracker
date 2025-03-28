@@ -10,20 +10,53 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
-  console.log("Signed in with Google:", result.user.uid);
-  return result.user;
+  const user = result.user;
+  console.log("Signed in with Google:", user.uid);
+
+  await setDoc(doc(db, "users", user.uid), {
+    email: user.email,
+  });
+  
+  const defaultCategories: Category[] = [
+    { id: 1, name: "Зарплатня", type: "Дохід" },
+    { id: 2, name: "Медицина", type: "Витрати" },
+  ];
+  defaultCategories.forEach(async (cat) => {
+    const docRef = doc(collection(db, "users", user.uid, "categories"), cat.id!.toString());
+    await setDoc(docRef, cat);
+  });
+
+  return user;
 }
+
 
 export async function signUpWithEmail(email: string, password: string) {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+      });
+      const defaultCategories: Category[] = [
+        { id: 1, name: "Зарплатня", type: "Дохід" },
+        { id: 2, name: "Медицина", type: "Витрати" },
+      ];
+      defaultCategories.forEach(async (cat) => {
+        const docRef = doc(collection(db, "users", user.uid, "categories"), cat.id.toString());
+        await setDoc(docRef, cat);
+      });
     console.log("User signed up:", userCredential.user.uid);
     return userCredential.user;
   }
   
 export async function signInWithEmail(email: string, password: string) {
+  try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("User signed in:", userCredential.user.uid);
     return userCredential.user;
+  } catch (error: any) {
+    console.error("Firebase sign-in error:", error.code, error.message);
+    throw error;
+  }  
 }
 
 export async function signOutUser(): Promise<void> {

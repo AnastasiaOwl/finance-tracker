@@ -2,7 +2,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Category {
-  id?: number;
+  id: number;
   name: string;
   type: "Дохід" | "Витрати";
 }

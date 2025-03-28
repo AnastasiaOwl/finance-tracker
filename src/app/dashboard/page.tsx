@@ -18,7 +18,7 @@ export default function Dashboard() {
     const categories = useSelector((state: RootState) => state.categories.categories);
     const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
     const [selectedTypeKey, setSelectedTypeKey] = useState(1);
-    const [selectedCategoryKey, setSelectedCategoryKey] = useState<number>(1);
+    const [selectedCategoryKey, setSelectedCategoryKey] = useState<number>(0);
     const [customCategory,setCustomCategory] = useState<string>("");
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
@@ -171,6 +171,7 @@ export default function Dashboard() {
                             value={selectedCategoryKey}
                             onChange={(e) => {
                             const newValue = parseInt(e.target.value, 10);
+                            console.log("Selected category =>", newValue);
                             if (newValue === 0) {
                                 setShowCustomInput(true);
                             } else {
