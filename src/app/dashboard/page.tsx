@@ -229,7 +229,9 @@ export default function Dashboard() {
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}></input>
                 </label>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+                <button className="bg-black text-white border border-white px-4 py-2 rounded-xl w-[7vw]
+                      hover:bg-white hover:text-black hover:border-black
+                      transition-colors duration-300"
                 onClick={handleAddTransaction}>
                     Додати
                 </button>

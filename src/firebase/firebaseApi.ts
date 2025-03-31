@@ -6,6 +6,7 @@ import {Category} from "@/redux/categorySlice";
 import { auth } from "@/firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Timestamp } from "firebase/firestore";
 
 export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
@@ -119,16 +120,19 @@ export const fetchCategories = async (): Promise<Category[]>=>{
 }
 
 export const addTransactionToFirestore = async (transaction: Transaction) => {
-   const user = auth.currentUser;
+  const user = auth.currentUser;
   if (!user) {
     throw new Error("No user is currently logged in!");
   }
-  const userId = user.uid; 
+  const userId = user.uid;
 
   try {
     const docRef = await addDoc(
       collection(db, "users", userId, "transactions"),
-      transaction
+      {
+        ...transaction,
+        date: Timestamp.fromDate(new Date(transaction.date)), 
+      }
     );
     console.log("✅ Transaction added with ID:", docRef.id);
     return docRef.id;
@@ -153,24 +157,32 @@ export const deleteTransactionFirestore = async (transactionId: string) =>{
     }
 }
 
-export const fetchTransactions = async (): Promise<Transaction[]>=>{
+export const fetchTransactions = async (): Promise<Transaction[]> => {
   const user = auth.currentUser;
   if (!user) {
     throw new Error("No user is currently logged in!");
   }
-  const userId = user.uid; 
+  const userId = user.uid;
 
   try {
     const querySnapshot = await getDocs(collection(db, "users", userId, "transactions"));
-    const transactions: Transaction[] = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Transaction[];
-    
+    const transactions: Transaction[] = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      const formattedDate =
+        data.date instanceof Timestamp ? data.date.toDate() : new Date(data.date);
+      return {
+        id: doc.id,
+        ...data,
+        date: formattedDate,
+      };
+    }) as Transaction[];
+    console.log("📜 Raw transaction data from Firestore:", querySnapshot.docs.map(doc => doc.data()));
+
     console.log("✅ Transactions fetched:", transactions);
     return transactions;
   } catch (error) {
     console.error("❌ Error fetching transactions:", error);
     return [];
   }
-}
+};
+
