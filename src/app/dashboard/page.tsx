@@ -11,6 +11,7 @@ import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
 import TransactionTable from "@/components/TransactionTable";
 import logoutIcon from "@/icons/icons8-logout-50.png";
+import AnalyticsDrawer from "@/components/AnaliticsDrawer";
 
 export default function Dashboard() {
     const dispatch = useDispatch<AppDispatch>();
@@ -236,7 +237,7 @@ export default function Dashboard() {
                     Додати
                 </button>
             </div>
-            <div className="flex items-start gap-6 p-4">
+            <div className="flex items-start gap-6 p-4 mr-[1.5vw]">
                     <TransactionTable 
                         title="Дохід" 
                         groupedTransactions={groupedIncome} 
@@ -253,6 +254,9 @@ export default function Dashboard() {
                         totalSum = {totalExpenses}
                         color="bg-red-500"
                     />
+            </div>
+            <div>
+                <AnalyticsDrawer/>
             </div>
         </main>
         </>
