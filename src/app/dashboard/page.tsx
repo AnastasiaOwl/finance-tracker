@@ -19,7 +19,7 @@ export default function Dashboard() {
     const categories = useSelector((state: RootState) => state.categories.categories);
     const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({});
     const [selectedTypeKey, setSelectedTypeKey] = useState(1);
-    const [selectedCategoryKey, setSelectedCategoryKey] = useState<number>(0);
+    const [selectedCategoryKey, setSelectedCategoryKey] = useState<number | string>(""); 
     const [customCategory,setCustomCategory] = useState<string>("");
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
@@ -169,24 +169,27 @@ export default function Dashboard() {
                     Категорія 
                     {!showCustomInput ? (
                         <select
-                            value={selectedCategoryKey}
-                            onChange={(e) => {
-                            const newValue = parseInt(e.target.value, 10);
+                        value={selectedCategoryKey}
+                        onChange={(e) => {
+                            const newValue = e.target.value;
                             console.log("Selected category =>", newValue);
-                            if (newValue === 0) {
-                                setShowCustomInput(true);
+                            if (newValue === "0") { // string "0"
+                            setShowCustomInput(true);
                             } else {
-                                setSelectedCategoryKey(newValue);
+                            setSelectedCategoryKey(newValue);
                             }
-                            }}
-                            className="p-2 border rounded-md m-2 w-[14vw]"
+                        }}
+                        className="p-2 border rounded-md m-2 w-[14vw]"
                         >
-                            {selectedCategories.map((option) => (
+                        <option value="" disabled>
+                            Виберіть категорію
+                        </option>
+                        {selectedCategories.map((option) => (
                             <option key={option.id} value={option.id}>
-                                {option.value}
+                            {option.value}
                             </option>
-                            ))}
-                        </select>
+                        ))}
+                        </select>                    
                         ) : (
                         <div className="inline-flex items-end gap-2 m-2">
                             <input
@@ -256,7 +259,7 @@ export default function Dashboard() {
                     />
             </div>
             <div>
-                <AnalyticsDrawer/>
+                <AnalyticsDrawer totalIncome={totalIncome} totalExpenses={totalExpenses} />
             </div>
         </main>
         </>

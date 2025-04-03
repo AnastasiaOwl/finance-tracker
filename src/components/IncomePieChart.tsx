@@ -37,7 +37,7 @@ export default function IncomePieChart({ data }: { data: CategoryAmount[] }) {
             const percentage = (value / total * 100).toFixed(1) + "%";
             return percentage;
           },
-          color: "#fff",
+          color: "black",
           anchor: "center",
           align: "center",
           font: {
