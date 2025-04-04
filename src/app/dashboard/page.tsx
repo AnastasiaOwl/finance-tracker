@@ -9,6 +9,7 @@ import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionAc
 import { addCategoryAsync, fetchCategoryAsync} from "@/redux/categoryActions";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
+import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 import TransactionTable from "@/components/TransactionTable";
 import logoutIcon from "@/icons/icons8-logout-50.png";
 import AnalyticsDrawer from "@/components/AnaliticsDrawer";
@@ -24,7 +25,16 @@ export default function Dashboard() {
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
-      const router = useRouter();
+    const { user, loading } = useFirebaseAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!loading && user) {
+          dispatch(fetchTransactionAsync());
+          dispatch(fetchCategoryAsync());
+        }
+      }, [dispatch, loading, user]);
+      
 
     const handleLogout = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -36,10 +46,11 @@ export default function Dashboard() {
         }
       };
 
-    useEffect(() => {
-        dispatch(fetchTransactionAsync());
-        dispatch(fetchCategoryAsync()); 
-    }, [dispatch]);
+      useEffect(() => {
+        if (!loading && !user) {
+          router.push("/register");
+        }
+      }, [user, loading, router]);
 
     const selectOptions = [
         { id: 1, value: "Дохід" }, 
@@ -173,7 +184,7 @@ export default function Dashboard() {
                         onChange={(e) => {
                             const newValue = e.target.value;
                             console.log("Selected category =>", newValue);
-                            if (newValue === "0") { // string "0"
+                            if (newValue === "0") {
                             setShowCustomInput(true);
                             } else {
                             setSelectedCategoryKey(newValue);

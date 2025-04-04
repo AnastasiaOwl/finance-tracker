@@ -88,7 +88,7 @@ export default function IncomeExpenseBar({ totalIncome, totalExpenses }: Props) 
   };
 
   return (
-    <div style={{ width: "400px", height: "300px" }}>
+    <div style={{ width: "500px", height: "350px", margin: "1vw", placeSelf: "self-center"}}>
       <Bar data={data} options={options} />
     </div>
   );

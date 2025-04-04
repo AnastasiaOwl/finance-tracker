@@ -45,7 +45,7 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
             fixed top-[12vh] 
             bottom-0 
             right-0 
-            w-[60vw]
+            w-[50vw]
             bg-white 
             shadow 
             transition-transform
@@ -59,7 +59,6 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
           </button>
           
           <div className="flex flex-col p-4">
-          {/* Radio buttons to toggle between graph types */}
           <div className="flex items-center space-x-4 mb-4">
             <label className="flex items-center">
               <input
@@ -70,7 +69,7 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
                 onChange={() => setSelectedGraph("pie")}
                 className="mr-2"
               />
-              Секторна діаграма
+              Секторна діаграма дохід/витрати за місяць
             </label>
             <label className="flex items-center">
               <input
@@ -81,14 +80,14 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
                 onChange={() => setSelectedGraph("bar")}
                 className="mr-2"
               />
-              Бар граф
+              Гістограма дохід/витрати за місяць
             </label>
           </div>
 
           {selectedGraph === "pie" ? (
-            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw]">
-              <h2 className="self-center text-xl m-[1vw]">Секторна діаграма за місяць</h2>
-              <div className="flex flex-row">
+            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw] m-[2vw]">
+              <h2 className="self-center text-xl m-[1vw]">Секторна діаграма дохід/витрати за місяць</h2>
+              <div className="flex flex-row m-[1vw]">
                 <div className="flex flex-col items-center">
                   <h2>Дохід</h2>
                   <IncomePieChart data={incomeData} />
@@ -100,8 +99,8 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
               </div>
             </div>
           ) : (
-            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw]">
-              <h2 className="self-center text-xl m-[1vw]">Порівняння доходів та витрат за поточний місяць</h2>
+            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw] m-[2vw] self-center">
+              <h2 className="self-center text-xl m-[1vw]">Гістограма дохід/витрати за місяць</h2>
               <IncomeExpenseBar totalIncome={totalIncome} totalExpenses={totalExpenses} />
             </div>
           )}

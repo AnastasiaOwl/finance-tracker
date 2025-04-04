@@ -7,6 +7,7 @@ import { auth } from "@/firebase/firebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Timestamp } from "firebase/firestore";
+import { FirebaseError } from "firebase/app";
 
 export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
@@ -49,16 +50,17 @@ export async function signUpWithEmail(email: string, password: string) {
     return userCredential.user;
   }
   
-export async function signInWithEmail(email: string, password: string) {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("User signed in:", userCredential.user.uid);
-    return userCredential.user;
-  } catch (error: any) {
-    console.error("Firebase sign-in error:", error.code, error.message);
-    throw error;
-  }  
-}
+  export async function signInWithEmail(email: string, password: string) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      console.log("User signed in:", userCredential.user.uid);
+      return userCredential.user;
+    } catch (error) {
+      const firebaseError = error as FirebaseError;
+      console.error("Firebase sign-in error:", firebaseError.code, firebaseError.message);
+      throw firebaseError;
+    }
+  }
 
 export async function signOutUser(): Promise<void> {
   try {

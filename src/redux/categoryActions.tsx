@@ -18,8 +18,6 @@ export const addCategoryAsync =
     }
   };
 
-
-
 export const fetchCategoryAsync =
   () => async (dispatch: AppDispatch) => {
     try {
