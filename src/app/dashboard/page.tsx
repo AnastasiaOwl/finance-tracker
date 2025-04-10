@@ -12,6 +12,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 import TransactionTable from "@/components/TransactionTable";
 import logoutIcon from "@/icons/icons8-logout-50.png";
+import settingsIcon from "@/icons/icons8-settings-100.png";
 import AnalyticsDrawer from "@/components/AnaliticsDrawer";
 
 export default function Dashboard() {
@@ -25,6 +26,7 @@ export default function Dashboard() {
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
+    const [settingsForm, setSettingsForm]= useState(false);
     const { user, loading } = useFirebaseAuth();
     const router = useRouter();
 
@@ -99,11 +101,15 @@ export default function Dashboard() {
         const transaction = {
             type: typeMap[selectedTypeKey],
             amount: Number(amount),
-            category: selectedCategories.find((category) => category.id === selectedCategoryKey)?.value || "",
+            category:
+              selectedCategories.find(
+                (category) => category.id === Number(selectedCategoryKey)
+              )?.value || "",
             date: new Date(),
             note: comment,
             userId: "userId_1",
-        };
+          };
+          
         dispatch(addTransactionAsync(transaction));
         setAmount("");
         setComment("");
@@ -152,13 +158,20 @@ export default function Dashboard() {
         <>
         <header className="bg-black text-white py-4 vw-6 flex justify-between items-center w-full">
             Вересень
-            <button className="w-[2vw] h-[2vw] mr-[0.5vw]
-                              transition-transform 
-                              duration-300 
-                              hover:scale-110
-                              "
-                    onClick={handleLogout}><Image src={logoutIcon} alt="logout" />
-            </button>
+            <div>
+                <button className="w-[2vw] h-[2vw] mr-[1vw]
+                                transition-transform 
+                                duration-300 
+                                hover:scale-110"
+                        onClick={setSettingsForm(true)}><Image src={settingsIcon} alt="settings"/></button>
+                <button className="w-[2vw] h-[2vw] mr-[0.5vw]
+                                transition-transform 
+                                duration-300 
+                                hover:scale-110
+                                "
+                        onClick={handleLogout}><Image src={logoutIcon} alt="logout" />
+                </button>
+            </div>
         </header>
         <main>
             <div className="bg-gray-200 w-[95vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
@@ -196,9 +209,9 @@ export default function Dashboard() {
                             Виберіть категорію
                         </option>
                         {selectedCategories.map((option) => (
-                            <option key={option.id} value={option.id}>
+                            <option key={option.id} value={option.id.toString()}>
                             {option.value}
-                            </option>
+                          </option>
                         ))}
                         </select>                    
                         ) : (

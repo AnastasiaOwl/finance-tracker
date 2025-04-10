@@ -121,6 +121,21 @@ export const fetchCategories = async (): Promise<Category[]>=>{
   }
 }
 
+export const deleteCategoryFirestore = async (categoryId: string) =>{
+  const user = auth.currentUser;
+  if (!user) {
+    throw new Error("No user is currently logged in!");
+  }
+  const userId = user.uid; 
+    try {
+      await deleteDoc(doc(db, "users", userId, "categories", categoryId));
+      console.log("Category deleting with ID:", categoryId);
+    } catch (error) {
+      console.error("❌ Error deleting category:", error);
+      throw error;
+    }
+}
+
 export const addTransactionToFirestore = async (transaction: Transaction) => {
   const user = auth.currentUser;
   if (!user) {

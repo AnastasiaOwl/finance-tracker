@@ -1,6 +1,6 @@
 "use client"
-import { addCategory, setCategories} from "./categorySlice";
-import { addCategoryToFirestore, fetchCategories} from "@/firebase/firebaseApi";
+import { addCategory, setCategories, deleteCategory} from "./categorySlice";
+import { addCategoryToFirestore, fetchCategories, deleteCategoryFirestore} from "@/firebase/firebaseApi";
 import { Category } from "@/redux/categorySlice";
 import { AppDispatch } from "./store";
 
@@ -17,6 +17,17 @@ export const addCategoryAsync =
       throw error;
     }
   };
+
+export const deleteCategoryAsync = 
+(categoryId: string) => async (dispatch: AppDispatch)=>{
+  try {
+    await deleteCategoryFirestore(categoryId);
+    dispatch(deleteCategory(categoryId));
+    console.log("✅ Category deleted from Redux and Firestore");
+  } catch (error) {
+    console.error("❌ Error deleting category:", error);
+  }
+}
 
 export const fetchCategoryAsync =
   () => async (dispatch: AppDispatch) => {
