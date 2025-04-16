@@ -3,6 +3,7 @@ import "../globals.css";
 import React, { useState, useEffect} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
+import SettingsModal from "@/components/SettingModal";
 import { useRouter } from "next/navigation"; 
 import { signOutUser} from "@/firebase/firebaseApi"; 
 import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
@@ -12,7 +13,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 import TransactionTable from "@/components/TransactionTable";
 import logoutIcon from "@/icons/icons8-logout-50.png";
-import settingsIcon from "@/icons/icons8-settings-100.png";
+import listIcon from "@/icons/icons8-list-100.png";
 import AnalyticsDrawer from "@/components/AnaliticsDrawer";
 
 export default function Dashboard() {
@@ -26,7 +27,7 @@ export default function Dashboard() {
     const [showCustomInput, setShowCustomInput] = useState(false);
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
-    const [settingsForm, setSettingsForm]= useState(false);
+    const [settingsFormOpen, setSettingsFormOpen] = useState(false);
     const { user, loading } = useFirebaseAuth();
     const router = useRouter();
 
@@ -163,7 +164,7 @@ export default function Dashboard() {
                                 transition-transform 
                                 duration-300 
                                 hover:scale-110"
-                        onClick={setSettingsForm(true)}><Image src={settingsIcon} alt="settings"/></button>
+                        onClick={()=>setSettingsFormOpen(true)}><Image src={listIcon} alt="settings"/></button>
                 <button className="w-[2vw] h-[2vw] mr-[0.5vw]
                                 transition-transform 
                                 duration-300 
@@ -173,6 +174,12 @@ export default function Dashboard() {
                 </button>
             </div>
         </header>
+        {settingsFormOpen && (
+            <SettingsModal
+                categories={categories}
+                onClose={() => setSettingsFormOpen(false)}
+            />
+        )}
         <main>
             <div className="bg-gray-200 w-[95vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
                 <label className="text-base">
