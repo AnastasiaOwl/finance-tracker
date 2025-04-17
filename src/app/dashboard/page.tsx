@@ -1,6 +1,6 @@
 "use client"
 import "../globals.css";
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect, useMemo} from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import SettingsModal from "@/components/SettingModal";
@@ -30,6 +30,24 @@ export default function Dashboard() {
     const [settingsFormOpen, setSettingsFormOpen] = useState(false);
     const { user, loading } = useFirebaseAuth();
     const router = useRouter();
+    const monthsUA = useMemo(
+        () => [
+          "Січень",
+          "Лютий",
+          "Березень",
+          "Квітень",
+          "Травень",
+          "Червень",
+          "Липень",
+          "Серпень",
+          "Вересень",
+          "Жовтень",
+          "Листопад",
+          "Грудень",
+        ],
+        []
+      );
+      const [selectedMonthIndex, setSelectedMonthIndex] = useState<number>(new Date().getMonth());
 
     useEffect(() => {
         if (!loading && user) {
@@ -123,42 +141,70 @@ export default function Dashboard() {
         }));
     };
 
-    const groupedIncome = transactions
-    .filter((t) => t.type === "Дохід")
-    .reduce((acc, transaction) => {
-        if (!acc[transaction.category]) {
-            acc[transaction.category] = { total: 0, items: [] };
-        }
-        acc[transaction.category].total += transaction.amount;
-        acc[transaction.category].items.push(transaction);
-        return acc;
-    }, {} as { [key: string]: { total: number; items: Transaction[] } });
+    const transactionsForMonth = useMemo(() => {
+        return transactions.filter((t) => {
+          const date = t.date instanceof Date ? t.date : new Date(t.date);
+          return (
+            date.getMonth() === selectedMonthIndex &&
+            date.getFullYear() === new Date().getFullYear()
+          );
+        });
+      }, [transactions, selectedMonthIndex]);
 
-    const totalIncome = Object.values(groupedIncome).reduce(
-        (sum, category) => sum + category.total,
-        0
-    );
-
-    const groupedExpenses = transactions
-        .filter((t) => t.type === "Витрати")
-        .reduce((acc, transaction) => {
-            if (!acc[transaction.category]) {
-                acc[transaction.category] = { total: 0, items: [] };
-            }
-            acc[transaction.category].total += transaction.amount;
-            acc[transaction.category].items.push(transaction);
+    
+    const groupedIncome = useMemo(() => {
+        return transactionsForMonth
+        .filter((t) => t.type === "Дохід")
+        .reduce((acc, t) => {
+            if (!acc[t.category]) acc[t.category] = { total: 0, items: [] };
+            acc[t.category].total += t.amount;
+            acc[t.category].items.push(t);
             return acc;
         }, {} as { [key: string]: { total: number; items: Transaction[] } });
+    }, [transactionsForMonth]);
 
-    const totalExpenses = Object.values(groupedExpenses).reduce(
-        (sum, category) => sum + category.total,
-        0
+    const groupedExpenses = useMemo(() => {
+        return transactionsForMonth
+        .filter((t) => t.type === "Витрати")
+        .reduce((acc, t) => {
+            if (!acc[t.category]) acc[t.category] = { total: 0, items: [] };
+            acc[t.category].total += t.amount;
+            acc[t.category].items.push(t);
+            return acc;
+        }, {} as { [key: string]: { total: number; items: Transaction[] } });
+    }, [transactionsForMonth]);
+
+    const totalIncome = useMemo(
+        () => Object.values(groupedIncome).reduce((s, c) => s + c.total, 0),
+        [groupedIncome]
     );
+    const totalExpenses = useMemo(
+        () => Object.values(groupedExpenses).reduce((s, c) => s + c.total, 0),
+        [groupedExpenses]
+    );
+
+    const incomeCategoryData = Object.entries(groupedIncome).map(
+        ([category, { total }]) => ({ category, amount: total })
+      );
+      const expenseCategoryData = Object.entries(groupedExpenses).map(
+        ([category, { total }]) => ({ category, amount: total })
+      );
+      
 
     return(
         <>
         <header className="bg-black text-white py-4 vw-6 flex justify-between items-center w-full">
-            Вересень
+            <select
+                value={selectedMonthIndex}
+                onChange={(e) => setSelectedMonthIndex(parseInt(e.target.value, 10))}
+                className="mr-4 rounded-md border border-white bg-black px-2 py-1 text-white focus:outline-none"
+                >
+                {monthsUA.map((month, idx) => (
+                    <option key={idx} value={idx} className="text-white">
+                    {month}
+                    </option>
+                ))}
+            </select>
             <div>
                 <button className="w-[2vw] h-[2vw] mr-[1vw]
                                 transition-transform 
@@ -290,7 +336,12 @@ export default function Dashboard() {
                     />
             </div>
             <div>
-                <AnalyticsDrawer totalIncome={totalIncome} totalExpenses={totalExpenses} />
+                <AnalyticsDrawer
+                    totalIncome={totalIncome}
+                    totalExpenses={totalExpenses}
+                    incomeCategoryData={incomeCategoryData}
+                    expenseCategoryData={expenseCategoryData}
+                />
             </div>
         </main>
         </>

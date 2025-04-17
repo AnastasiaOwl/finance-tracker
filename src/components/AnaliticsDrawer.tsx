@@ -1,16 +1,24 @@
 import React from "react";
 import IncomePieChart from "./IncomePieChart";
-import useIncomeExpenseSummary from "@/hooks/useIncomeExpenseSummary";
 import IncomeExpenseBar from "./IncomeExpenseBar";
+
+export interface CategoryAmount {
+  category: string;
+  amount: number;
+}
 
 interface AnalyticsDrawerProps {
   totalIncome: number;
   totalExpenses: number;
+  incomeCategoryData: CategoryAmount[];
+  expenseCategoryData: CategoryAmount[];
 }
 
-export default function AnalyticsDrawer({ totalIncome, totalExpenses }: AnalyticsDrawerProps ) {
+export default function AnalyticsDrawer({ incomeCategoryData,
+  expenseCategoryData,
+  totalIncome,
+  totalExpenses, }: AnalyticsDrawerProps ) {
     const [isOpen, setIsOpen] = React.useState(false);
-    const { incomeData, expenseData } = useIncomeExpenseSummary();
     const [selectedGraph, setSelectedGraph] = React.useState<"pie" | "bar">("pie");
   
     function toggleDrawer() {
@@ -90,11 +98,11 @@ export default function AnalyticsDrawer({ totalIncome, totalExpenses }: Analytic
               <div className="flex flex-row m-[1vw]">
                 <div className="flex flex-col items-center">
                   <h2>Дохід</h2>
-                  <IncomePieChart data={incomeData} />
+                  <IncomePieChart data={incomeCategoryData} />
                 </div>
                 <div className="flex flex-col items-center">
                   <h2>Витрати</h2>
-                  <IncomePieChart data={expenseData} />
+                  <IncomePieChart data={expenseCategoryData} />
                 </div>
               </div>
             </div>
