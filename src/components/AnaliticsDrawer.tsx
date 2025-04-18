@@ -1,6 +1,7 @@
 import React from "react";
 import IncomePieChart from "./IncomePieChart";
 import IncomeExpenseBar from "./IncomeExpenseBar";
+import LineChart from "./LineChart";
 
 export interface CategoryAmount {
   category: string;
@@ -12,108 +13,130 @@ interface AnalyticsDrawerProps {
   totalExpenses: number;
   incomeCategoryData: CategoryAmount[];
   expenseCategoryData: CategoryAmount[];
+  yearlyIncome: number[];
+  yearlyExpenses: number[];
+  currentMonthName: string;
 }
 
 export default function AnalyticsDrawer({ incomeCategoryData,
   expenseCategoryData,
   totalIncome,
-  totalExpenses, }: AnalyticsDrawerProps ) {
+  totalExpenses,
+  yearlyExpenses,
+  yearlyIncome,
+ currentMonthName}: AnalyticsDrawerProps ) {
     const [isOpen, setIsOpen] = React.useState(false);
-    const [selectedGraph, setSelectedGraph] = React.useState<"pie" | "bar">("pie");
+    const [selectedGraph, setSelectedGraph] = React.useState<"pie" | "bar" | "line">(
+      "pie"
+    );
   
-    function toggleDrawer() {
-      setIsOpen((prev) => !prev);
-    }
-  
-    return (
-      <>
-        <button
-          onClick={toggleDrawer}
-          className=" 
-            absolute right-0 top-[12vh]
-            flex items-center justify-center
-            w-[2rem] h-[38rem]
-            bg-black text-white
-            rounded-r-full
-            [writing-mode:vertical-rl] 
-            [text-orientation:mixed]  
-            rotate-180 
-            text-center 
-            border 
-            border-black
-            hover:bg-white hover:text-black hover:border-black
-            transition-colors duration-300
-            text-lg
-            tracking-widest"
-          >
-          Аналітика
-        </button>
-        <div
-          className={`
-            fixed top-[12vh] 
-            bottom-0 
-            right-0 
-            w-[50vw]
-            bg-white 
-            shadow 
-            transition-transform
-            rounded-3xl
-            border border-black
-            ${isOpen ? "translate-x-0" : "translate-x-full"}
-          `}
-        >
-          <button onClick={toggleDrawer} className="p-2 ml-[1vw] text-black">
-            X
-          </button>
-          
-          <div className="flex flex-col p-4">
-          <div className="flex items-center space-x-4 mb-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="graph"
-                value="pie"
-                checked={selectedGraph === "pie"}
-                onChange={() => setSelectedGraph("pie")}
-                className="mr-2"
-              />
-              Секторна діаграма дохід/витрати за місяць
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="graph"
-                value="bar"
-                checked={selectedGraph === "bar"}
-                onChange={() => setSelectedGraph("bar")}
-                className="mr-2"
-              />
-              Гістограма дохід/витрати за місяць
-            </label>
+ function renderGraph() {
+  switch (selectedGraph) {
+    case "pie":
+      return (
+        <div className="m-[2vw] w-fit rounded-xl border border-black p-4">
+          <h2 className="mb-4 text-center text-xl font-medium">
+            Секторна діаграма — {currentMonthName}
+          </h2>
+          <div className="flex gap-6">
+            <div className="flex flex-col items-center">
+              <h3 className="mb-2 font-semibold">Дохід</h3>
+              <IncomePieChart data={incomeCategoryData} variant={"Дохід"} />
+            </div>
+            <div className="flex flex-col items-center">
+              <h3 className="mb-2 font-semibold">Витрати</h3>
+              <IncomePieChart data={expenseCategoryData} variant={"Витрати"} />
+            </div>
           </div>
-
-          {selectedGraph === "pie" ? (
-            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw] m-[2vw]">
-              <h2 className="self-center text-xl m-[1vw]">Секторна діаграма дохід/витрати за місяць</h2>
-              <div className="flex flex-row m-[1vw]">
-                <div className="flex flex-col items-center">
-                  <h2>Дохід</h2>
-                  <IncomePieChart data={incomeCategoryData} />
-                </div>
-                <div className="flex flex-col items-center">
-                  <h2>Витрати</h2>
-                  <IncomePieChart data={expenseCategoryData} />
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col border border-black w-fit rounded-xl ml-[2vw] m-[2vw] self-center">
-              <h2 className="self-center text-xl m-[1vw]">Гістограма дохід/витрати за місяць</h2>
-              <IncomeExpenseBar totalIncome={totalIncome} totalExpenses={totalExpenses} />
-            </div>
-          )}
         </div>
+      );
+
+    case "bar":
+      return (
+        <div className="m-[2vw] w-fit rounded-xl border border-black p-4">
+          <h2 className="mb-4 text-center text-xl font-medium">
+            Гістограма — {currentMonthName}
+          </h2>
+          <IncomeExpenseBar
+            totalIncome={totalIncome}
+            totalExpenses={totalExpenses}
+          />
+        </div>
+      );
+
+    case "line":
+      return (
+        <div className="m-[2vw] h-[28rem] w-[43vw] rounded-xl border border-black p-4">
+          <h2 className="mb-4 text-center text-xl font-medium">
+            Дохід / витрати — {new Date().getFullYear()}
+          </h2>
+          <LineChart
+            yearlyIncome={yearlyIncome}
+            yearlyExpenses={yearlyExpenses}
+          />
+        </div>
+      );
+
+    default:
+      return null;
+  }
+}
+
+return (
+  <>
+    <button
+      onClick={() => setIsOpen((p) => !p)}
+      className="absolute right-0 top-[12vh] flex h-[38rem] w-[2rem] rotate-180 items-center justify-center rounded-r-full border border-black bg-black text-lg tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black [text-orientation:mixed] [writing-mode:vertical-rl]"
+    >
+      Аналітика
+    </button>
+    <div
+      className={`fixed right-0 top-[12vh] bottom-0 w-[50vw] rounded-3xl border border-black bg-white shadow transition-transform ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+    >
+      <button onClick={() => setIsOpen(false)} className="p-2 ml-[1vw]">
+        X
+      </button>
+
+      <div className="flex flex-col p-4">
+        {/* radio buttons */}
+        <div className="mb-4 flex items-center space-x-4">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="graph"
+              value="pie"
+              checked={selectedGraph === "pie"}
+              onChange={() => setSelectedGraph("pie")}
+              className="mr-2"
+            />
+            Секторна
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="graph"
+              value="bar"
+              checked={selectedGraph === "bar"}
+              onChange={() => setSelectedGraph("bar")}
+              className="mr-2"
+            />
+            Гістограма
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              name="graph"
+              value="line"
+              checked={selectedGraph === "line"}
+              onChange={() => setSelectedGraph("line")}
+              className="mr-2"
+            />
+            Лінійний графік
+          </label>
+        </div>
+        {renderGraph()}
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }

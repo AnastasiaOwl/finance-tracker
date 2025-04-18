@@ -3,10 +3,14 @@ import {
     Chart as ChartJS,
     ArcElement,
     Tooltip,
-    Legend
+    Legend,
   } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels"; 
-import { Pie } from "react-chartjs-2";
+  import type { ChartOptions } from "chart.js";
+  import ChartDataLabels, { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
+  import { Pie } from "react-chartjs-2";
+  
+  ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+  
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
@@ -15,38 +19,53 @@ interface CategoryAmount {
   amount: number;
 }
 
-export default function IncomePieChart({ data }: { data: CategoryAmount[] }) {
+interface IncomePieChartProps {
+  data: CategoryAmount[];
+  variant?: "Дохід" | "Витрати";
+}
+
+export default function IncomePieChart({
+  data,
+  variant = "Дохід",
+}: IncomePieChartProps) {
+  const baseHue = variant === "Дохід" ? 120 : 0;
+
+  const backgroundColor = data.map((_, idx) => {
+    const hue = (baseHue + (idx * 360) / data.length) % 360;
+    return `hsl(${hue}, 70%, 50%)`;
+  });
+
   const chartData = {
     labels: data.map((d) => d.category),
     datasets: [
       {
         data: data.map((d) => d.amount),
-        backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"],
+        backgroundColor,
       },
     ],
   };
 
-  const options = {
+
+  const options: ChartOptions<"pie"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-        datalabels: {
-          formatter: (value: number, context: any) => {
-            const datapoints = context.chart.data.datasets[0].data;
-            const total = datapoints.reduce((acc: number, val: number) => acc + val, 0);
-            const percentage = (value / total * 100).toFixed(1) + "%";
-            return percentage;
-          },
-          color: "black",
-          anchor: "center",
-          align: "center",
-          font: {
-            size: 14,
-            weight: "bold",
-          },
+      datalabels: {
+        formatter: (value: number, context: DatalabelsContext) => {
+          const data = context.chart.data.datasets[0].data as number[];
+          const total = data.reduce((sum, v) => sum + v, 0);
+          return ((value / total) * 100).toFixed(1) + "%";
+        },
+        color: "black",
+        anchor: "center",
+        align: "center",
+        font: {
+          size: 14,
+          weight: "bold",
         },
       },
-  };
+    },
+  };  
 
   return (
     <div className="w-80 h-80">

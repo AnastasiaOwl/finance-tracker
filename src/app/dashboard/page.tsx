@@ -189,6 +189,25 @@ export default function Dashboard() {
       const expenseCategoryData = Object.entries(groupedExpenses).map(
         ([category, { total }]) => ({ category, amount: total })
       );
+
+    const { incomeByMonth, expenseByMonth } = useMemo(() => {
+        const incomeArr = Array(12).fill(0);
+        const expenseArr = Array(12).fill(0);
+        transactions.forEach((t) => {
+        const d = t.date instanceof Date ? t.date : new Date(t.date);
+        if (d.getFullYear() === new Date().getFullYear()) {
+            const m = d.getMonth();
+            if (t.type === "Дохід") {
+            incomeArr[m] += t.amount;
+            } else {
+            expenseArr[m] += t.amount;
+            }
+        }
+        });
+    
+        return { incomeByMonth: incomeArr, expenseByMonth: expenseArr };
+    }, [transactions]);
+  
       
 
     return(
@@ -197,7 +216,7 @@ export default function Dashboard() {
             <select
                 value={selectedMonthIndex}
                 onChange={(e) => setSelectedMonthIndex(parseInt(e.target.value, 10))}
-                className="mr-4 rounded-md border border-white bg-black px-2 py-1 text-white focus:outline-none"
+                className="ml-4 mr-4 rounded-md border border-white bg-black px-2 py-1 text-white focus:outline-none"
                 >
                 {monthsUA.map((month, idx) => (
                     <option key={idx} value={idx} className="text-white">
@@ -336,12 +355,15 @@ export default function Dashboard() {
                     />
             </div>
             <div>
-                <AnalyticsDrawer
-                    totalIncome={totalIncome}
-                    totalExpenses={totalExpenses}
-                    incomeCategoryData={incomeCategoryData}
-                    expenseCategoryData={expenseCategoryData}
-                />
+            <AnalyticsDrawer
+                totalIncome={totalIncome}
+                totalExpenses={totalExpenses}
+                incomeCategoryData={incomeCategoryData}
+                expenseCategoryData={expenseCategoryData}
+                yearlyIncome={incomeByMonth}
+                yearlyExpenses={expenseByMonth}
+                currentMonthName={monthsUA[selectedMonthIndex]}
+             />
             </div>
         </main>
         </>
