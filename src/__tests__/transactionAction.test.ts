@@ -1,90 +1,134 @@
-// src/__tests__/transactionActions.test.ts
+jest.mock('@/firebase/firebaseConfig', () => ({
+  db: {},
+  auth: {},
+  googleProvider: {},
+}));
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import configureMockStore from 'redux-mock-store';
-import type { AnyAction, Middleware, Dispatch } from 'redux';
-
-const thunkMiddleware = (require('redux-thunk') as any) as Middleware<
-  any,           // state type (we don't care here)
-  AnyAction,     // action type
-  Dispatch<AnyAction> // dispatch type
->;
-
-import * as api from '@/firebase/firebaseApi';
 import {
   addTransactionAsync,
   deleteTransactionAsync,
   fetchTransactionAsync,
-} from '@/redux/transactionActions';
+} from '../redux/transactionActions';
 import {
   addTransaction,
   deleteTransaction,
   setTransactions,
-  type Transaction,
-} from '@/redux/transactionSlice';
+  Transaction,
+} from '../redux/transactionSlice';
+import * as api from '@/firebase/firebaseApi';
+import type { AppDispatch } from '../redux/store';
 
-const mockStore = configureMockStore<any, AnyAction>([thunkMiddleware]);
+jest.mock('@/firebase/firebaseApi');
 
-jest.mock('@/firebase/firebaseApi', () => ({
-  addTransactionToFirestore: jest.fn(),
-  deleteTransactionFirestore: jest.fn(),
-  fetchTransactions: jest.fn(),
-}));
-
-describe('transaction async thunks', () => {
-  let store: ReturnType<typeof mockStore>;
+describe('transactionActions async thunks', () => {
+  let dispatch: jest.MockedFunction<AppDispatch>;
+  const mockDate = new Date('2025-04-24T00:00:00Z');
+  const baseTransaction: Omit<Transaction, 'id'> = {
+    type: 'Дохід',
+    amount: 100,
+    category: 'TestCategory',
+    date: mockDate,
+    note: 'Test note',
+    userId: 'user1',
+  };
 
   beforeEach(() => {
-    store = mockStore({ transactions: [] });
+    dispatch = jest.fn() as jest.MockedFunction<AppDispatch>;
     jest.clearAllMocks();
   });
 
-  it('dispatches addTransaction on successful addTransactionAsync', async () => {
-    const fakeTxn: Omit<Transaction, 'id'> = {
-      type: 'Дохід',
-      amount: 123,
-      category: 'Test',
-      date: new Date(),
-      note: '',
-      userId: 'u1',
-    };
-    (api.addTransactionToFirestore as jest.Mock).mockResolvedValue('new-id');
+  describe('addTransactionAsync', () => {
+    it('dispatches addTransaction and logs success', async () => {
+      const newId = 'abc123';
+      (api.addTransactionToFirestore as jest.Mock).mockResolvedValue(newId);
+      console.log = jest.fn();
 
-    await store.dispatch(addTransactionAsync(fakeTxn as any) as any);
+      await addTransactionAsync({ ...baseTransaction } as Transaction)(dispatch);
 
-    expect(store.getActions()).toEqual([
-      addTransaction({ ...fakeTxn, id: 'new-id' }),
-    ]);
-    expect(api.addTransactionToFirestore).toHaveBeenCalledWith(fakeTxn);
+      expect(api.addTransactionToFirestore).toHaveBeenCalledWith(
+        expect.objectContaining(baseTransaction)
+      );
+      expect(dispatch).toHaveBeenCalledWith(
+        addTransaction({ ...baseTransaction, id: newId })
+      );
+      expect(console.log).toHaveBeenCalledWith(
+        '✅ Transaction added to Redux and Firestore'
+      );
+    });
+
+    it('logs error on failure without dispatch', async () => {
+      const error = new Error('fail');
+      (api.addTransactionToFirestore as jest.Mock).mockRejectedValue(error);
+      console.error = jest.fn();
+
+      await addTransactionAsync({ ...baseTransaction } as Transaction)(dispatch);
+
+      expect(console.error).toHaveBeenCalledWith(
+        '❌ Error adding transaction:',
+        error
+      );
+      expect(dispatch).not.toHaveBeenCalled();
+    });
   });
 
-  it('dispatches deleteTransaction on successful deleteTransactionAsync', async () => {
-    (api.deleteTransactionFirestore as jest.Mock).mockResolvedValue(undefined);
+  describe('deleteTransactionAsync', () => {
+    it('dispatches deleteTransaction and logs success', async () => {
+      const id = '1';
+      (api.deleteTransactionFirestore as jest.Mock).mockResolvedValue(undefined);
+      console.log = jest.fn();
 
-    await store.dispatch(deleteTransactionAsync('tx-123') as any);
+      await deleteTransactionAsync(id)(dispatch);
 
-    expect(store.getActions()).toEqual([deleteTransaction('tx-123')]);
-    expect(api.deleteTransactionFirestore).toHaveBeenCalledWith('tx-123');
+      expect(api.deleteTransactionFirestore).toHaveBeenCalledWith(id);
+      expect(dispatch).toHaveBeenCalledWith(deleteTransaction(id));
+      expect(console.log).toHaveBeenCalledWith(
+        '✅ Transaction deleted from Redux and Firestore'
+      );
+    });
+
+    it('logs error on failure without dispatch', async () => {
+      const error = new Error('fail-delete');
+      const id = '1';
+      (api.deleteTransactionFirestore as jest.Mock).mockRejectedValue(error);
+      console.error = jest.fn();
+
+      await deleteTransactionAsync(id)(dispatch);
+
+      expect(console.error).toHaveBeenCalledWith(
+        '❌ Error deleting transaction:',
+        error
+      );
+      expect(dispatch).not.toHaveBeenCalled();
+    });
   });
 
-  it('dispatches setTransactions on successful fetchTransactionAsync', async () => {
-    const mockList: Transaction[] = [
-      {
-        id: '1',
-        type: 'Витрати',
-        amount: 50,
-        category: 'A',
-        date: new Date(),
-        note: '',
-        userId: 'u',
-      },
-    ];
-    (api.fetchTransactions as jest.Mock).mockResolvedValue(mockList);
+  describe('fetchTransactionAsync', () => {
+    it('dispatches setTransactions and logs success', async () => {
+      const transactions: Transaction[] = [{ id: '1', ...baseTransaction }];
+      (api.fetchTransactions as jest.Mock).mockResolvedValue(transactions);
+      console.log = jest.fn();
 
-    await store.dispatch(fetchTransactionAsync() as any);
+      await fetchTransactionAsync()(dispatch);
 
-    expect(store.getActions()).toEqual([setTransactions(mockList)]);
-    expect(api.fetchTransactions).toHaveBeenCalled();
+      expect(api.fetchTransactions).toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledWith(setTransactions(transactions));
+      expect(console.log).toHaveBeenCalledWith(
+        '✅ Transactions loaded into Redux'
+      );
+    });
+
+    it('logs error on failure without dispatch', async () => {
+      const error = new Error('fail-fetch');
+      (api.fetchTransactions as jest.Mock).mockRejectedValue(error);
+      console.error = jest.fn();
+
+      await fetchTransactionAsync()(dispatch);
+
+      expect(console.error).toHaveBeenCalledWith(
+        '❌ Error loading transactions:',
+        error
+      );
+      expect(dispatch).not.toHaveBeenCalled();
+    });
   });
 });
