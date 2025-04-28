@@ -13,7 +13,6 @@ import googleIcon from "@/icons/icons8-google-plus-48.png";
 
 export default function RegisterPage() {
   const [isRegisterMode, setIsRegisterMode] = useState(true);
-  const circleTranslate = "translate-x-[122px]";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -75,45 +74,94 @@ export default function RegisterPage() {
       }}
     >
       <div className="flex flex-col items-center justify-center min-h-screen ">
-        <form onSubmit={isRegisterMode ? handleRegister : handleLogin} className="flex flex-col w-64 bg-black/80 w-[25vw] h-[65vh] items-center 
+        <form onSubmit={isRegisterMode ? handleRegister : handleLogin} className="flex flex-col bg-black/80  
+        w-[80vw]
+        mobile-landscape:w-[60vw]
+        mobile-landscape:h-[50vw]
+        sm:w-40
+        md:w-80
+        lg:w-96 h-[65vh] items-center 
         border  rounded-2xl z-10">
-            <div className="relative inline-flex items-center cursor-pointer select-none mt-[2vw] mb-[4vw]" onClick={toggleAuthMode}>
+          <div className="relative inline-flex items-center cursor-pointer select-none mt-[2vw] mb-[4vw]" onClick={toggleAuthMode}>
             <div className={`
-                block w-40 h-10 rounded-full border transition-all duration-300
+                block
+                w-[50vw]
+                h-[10vw]
+                mobile-landscape:w-[30vw]
+                mobile-landscape:h-[7vw]
+                sm:w-[30vw]
+                md:w-[12vw]
+                md:h-10 
+                rounded-full border transition-all ease-in-out duration-700
                 ${isRegisterMode 
-                  ? "bg-black border-white"  
-                  : "bg-white border-black"
+                  ? "bg-black border-white transition-colors ease-in-out duration-700"
+                  : "bg-white border-black transition-colors ease-in-out duration-700"
                 }`}></div>
               <div className={`
-                  absolute left-1 right-1 w-8 h-8 rounded-full shadow-md transition-all duration-300
-                  ${isRegisterMode 
-                    ? "bg-white translate-x-0" 
-                    : "bg-black " + circleTranslate
+                  absolute top-1
+                 ${isRegisterMode ? "left-1 bg-white" : "right-1 bg-black"}
+                  w-6 h-6
+                  mobile-landscape:w-[5.5vw]
+                  mobile-landscape:h-[5.5vw]
+                  md:w-8
+                  md:h-8  rounded-full shadow-md
+                  transition-transform ease-in-out duration-700
                   }`}></div>
               <span
-                className={` absolute left-0 w-full text-center font-medium transition-colors duration-300
+                className={` absolute left-0 w-full text-center 
+                      text-sm
+                      md:text-lg  transition-colors duration-300
                   ${isRegisterMode ? "text-white" : "text-black"}`}>
                 {isRegisterMode ? "Реєстрація" : "Авторизація"}
               </span>
           </div>
-          <div className=" flex flex-col gap-8 items-center">
+          <div className=" flex flex-col 
+            gap-8
+            mobile-landscape:gap-3
+            items-center mt-[4vw] 
+            md:mt-[0vw]
+            mobile-landscape:mt-[1vw]">
             <div className="flex flex-row items-center">
-              <Image src={userIcon} alt="user" width={30} height={30} className="mr-[0.8vw]" />
+              <Image src={userIcon} alt="user" className="mr-[0.8vw]
+                w-[8vw] h-[8vw]
+                mobile-landscape:w-[4vw]
+                mobile-landscape:h-[4vw]
+                md:w-[2vw]
+                md:h-[2vw]" />
               <input
                 type="email"
                 placeholder="Email"
-                className="p-2 border rounded w-[18vw]"
+                className="p-2 border rounded 
+                w-[46vw] h-[10vw]
+                mobile-landscape:w-[35vw]
+                mobile-landscape:h-[6vw]
+                md:w-[18vw]
+                md:h-[3vw]
+                text-sm
+                md:text-lg"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
             <div className="flex flex-row items-center">
-              <Image src={passwordIcon} alt="password" width={30} height={30} className="mr-[0.8vw]"/>
+              <Image src={passwordIcon} alt="password" className="mr-[0.8vw]
+                w-[8vw] h-[8vw]
+                mobile-landscape:w-[4vw]
+                mobile-landscape:h-[4vw]
+                md:w-[2vw]
+                md:h-[2vw]"/>
               <input
                 type="password"
                 placeholder="Password"
-                className="p-2 border rounded w-[18vw]"
+                className="p-2 border rounded
+                w-[46vw] h-[10vw]
+                mobile-landscape:w-[35vw]
+                mobile-landscape:h-[6vw]
+                md:w-[18vw]
+                md:h-[3vw]
+                text-sm
+                md:text-lg"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -121,11 +169,23 @@ export default function RegisterPage() {
             </div>
               {isRegisterMode && (
               <div className="flex items-center mb-3">
-                <Image src={passwordCheckIcon} alt="password" width={30} height={30} className="mr-2" />
+                <Image src={passwordCheckIcon} alt="password" className="mr-2
+                w-[8vw] h-[8vw]
+                mobile-landscape:w-[4vw]
+                mobile-landscape:h-[4vw]
+                md:w-[2vw]
+                md:h-[2vw]" />
                 <input
                   type="password"
                   placeholder="Confirm Password"
-                  className="p-2 border rounded w-[18vw]"
+                  className="p-2 border rounded    
+                  w-[46vw] h-[10vw]
+                  mobile-landscape:w-[35vw]
+                  mobile-landscape:h-[6vw]
+                  md:w-[18vw]
+                  md:h-[3vw]
+                  text-sm
+                  md:text-lg"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
@@ -135,22 +195,34 @@ export default function RegisterPage() {
             <button
               type="submit"
               onSubmit={isRegisterMode ? handleRegister : handleLogin}
-              className="bg-black text-white border border-white px-4 py-2 rounded-xl w-[10vw]
-                      hover:bg-white hover:text-black hover:border-black
-                      transition-colors duration-300"
+              className="bg-black text-white border border-white px-4 py-2 rounded-xl
+              inline-flex items-center justify-center
+              w-fit
+              mobile-landscape:h-[6vw]
+              text-sm
+              md:text-lg
+              hover:bg-white hover:text-black hover:border-black
+              transition-colors duration-300"
               >
               {isRegisterMode ? "Зареєструватись" : "Увійти"}
             </button>
             {errorMessage && <p className="text-red-400 mb-2">{errorMessage}</p>}
           </div>
           {!isRegisterMode && (
-            <div className="flex flex-row items-center mt-[3.5vw]">
-              <p className="text-white mr-[1.5vw]">Авторизуватись через</p>
+            <div className="flex flex-row items-center mt-[3vw]">
+              <p className="text-white mr-[1vw]
+              text-sm
+              md:text-lg">Авторизуватись через</p>
               <button
-                className="w-[2vw] h-[2vw] mr-[0.5vw] transition-transform duration-300 hover:scale-110"
+                className="w-[8vw] h-[8vw]
+                mobile-landscape:w-[5vw]
+                mobile-landscape:h-[5vw]
+                md:w-[2.6vw]
+                md:h-[2.6vw]
+                transition-transform duration-300 hover:scale-110"
                 onClick={handleRegisterGoogle}
               >
-                <Image src={googleIcon} alt="google" />
+                <Image src={googleIcon} alt="google"/>
               </button>
             </div>
           )}

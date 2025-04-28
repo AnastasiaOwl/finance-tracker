@@ -7,6 +7,13 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant(
+        'mobile-landscape',
+        '@media (orientation: landscape) and (max-width: 639px)'
+      );
+    }
+  ],
 };
 
