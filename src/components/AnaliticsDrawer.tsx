@@ -86,7 +86,14 @@ return (
   <>
     <button
       onClick={() => setIsOpen((p) => !p)}
-      className="absolute right-0 top-[12vh] flex h-[38rem] w-[2rem] rotate-180 items-center justify-center rounded-r-full border border-black bg-black text-lg tracking-widest text-white transition-colors duration-300 hover:bg-white hover:text-black [text-orientation:mixed] [writing-mode:vertical-rl]"
+      className="absolute right-0 top-[12vh] flex h-[38rem] 
+      w-[2rem] rotate-180 items-center justify-center rounded-r-full 
+      border border-black bg-black text-lg tracking-widest text-white 
+      transition-colors duration-300 hover:bg-white hover:text-black [text-orientation:mixed] 
+      [writing-mode:vertical-rl]
+      mobile-landscape:text-xs
+      mobile-landscape:w-[1rem]
+      mobile-landscape:top-[15vh]"
     >
       Аналітика
     </button>

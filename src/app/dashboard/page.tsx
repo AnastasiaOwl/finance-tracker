@@ -212,25 +212,46 @@ export default function Dashboard() {
 
     return(
         <>
-        <header className="bg-black text-white py-4 vw-6 flex justify-between items-center w-full">
+        <header className="bg-black text-white py-4 vw-6
+         relative w-screen flex justify-between items-center
+         h-[10vw]
+         mobile-landscape:h-[8vw]
+         md:h-[4.5vw] ">
             <select
                 value={selectedMonthIndex}
                 onChange={(e) => setSelectedMonthIndex(parseInt(e.target.value, 10))}
-                className="ml-4 mr-4 rounded-md border border-white bg-black px-2 py-1 text-white focus:outline-none"
+                className="ml-4 mr-4 rounded-md border
+                            w-[30vw]
+                            h-[8vw]
+                            text-xs
+                            mobile-landscape:w-[19vw]
+                            mobile-landscape:h-[5vw]
+                            md:text-base
+                            md:w-[8vw]
+                            md:h-[2vw]
+                            border-white bg-black px-2 py-1 text-white focus:outline-none"
                 >
                 {monthsUA.map((month, idx) => (
-                    <option key={idx} value={idx} className="text-white">
+                    <option key={idx} value={idx} className="text-white text-xs  md:text-base">
                     {month}
                     </option>
                 ))}
             </select>
             <div>
-                <button className="w-[2vw] h-[2vw] mr-[1vw]
+                <button className="w-[2vw] h-[2vw]
+                                mobile-landscape:w-[5vw]
+                                mobile-landscape:h-[5vw]
+                                mobile-landscape: mr-[2vw]
+                                mr-[1vw]
                                 transition-transform 
                                 duration-300 
                                 hover:scale-110"
                         onClick={()=>setSettingsFormOpen(true)}><Image src={listIcon} alt="settings"/></button>
-                <button className="w-[2vw] h-[2vw] mr-[0.5vw]
+                <button className="w-[2vw] h-[2vw]
+                                mobile-landscape:w-[5vw]
+                                mobile-landscape:h-[5vw]
+                                mobile-landscape: mr-[1vw]
+                                mr-[0.5vw]
                                 transition-transform 
                                 duration-300 
                                 hover:scale-110
@@ -245,24 +266,45 @@ export default function Dashboard() {
                 onClose={() => setSettingsFormOpen(false)}
             />
         )}
-        <main>
-            <div className="bg-gray-200 w-[95vw] flex gap-5 items-center rounded-[15px] p-3 m-3 justify-self-center shadow-md" >
-                <label className="text-base">
-                    Тип
+        <main className="w-screen ">
+            <div className="bg-gray-200 
+                            w-[95vw]
+                            mobile-landscape:w-[95vw]
+                            mobile-landscape:h-[12vw]
+                            sm:w-[95vw]
+                            flex gap-2
+                            md:gap-5
+                            md:gap-3 
+                            md:items-center 
+                            items-end
+                            rounded-[15px] p-1 m-3 justify-self-center shadow-md" >
+                <label className="flex text-xs  md:text-base flex-col items-center
+                        md:flex
+                        md:flex-row 
+                        md:items-center">
+                        <span>Тип</span>
                         <select
                             value={selectedTypeKey}
                             onChange={(e) => setSelectedTypeKey(parseInt(e.target.value))}
-                            className="p-2 border rounded-md m-2"
+                            className=" border rounded-md m-1
+                            mobile-landscape:w-[12vw]
+                            mobile-landscape:h-[5vw]
+                            md:p-2
+                            md:m-2
+                            text-xs  md:text-base"
                         >
                         {selectOptions.map((option) => (
-                        <option key={option.id} value={option.id}>
+                        <option key={option.id} value={option.id} className="text-xs  md:text-base">
                             {option.value}
                         </option>
                         ))}
                         </select>
                 </label>
-                <label className="text-base">
-                    Категорія 
+                <label className="flex text-xs  md:text-base flex-col items-center
+                        md:flex
+                        md:flex-row 
+                        md:items-center">
+                    <span>Категорія</span> 
                     {!showCustomInput ? (
                         <select
                         value={selectedCategoryKey}
@@ -275,13 +317,22 @@ export default function Dashboard() {
                             setSelectedCategoryKey(newValue);
                             }
                         }}
-                        className="p-2 border rounded-md m-2 w-[14vw]"
+                        className=" border rounded-md m-1
+                            mobile-landscape:w-[28vw]
+                            mobile-landscape:h-[5vw]
+                            md:w-[14vw]
+                            md:p-2
+                            md:m-2
+                            text-xs  md:text-base"
                         >
-                        <option value="" disabled>
-                            Виберіть категорію
+                        <option value="" disabled className="flex text-xs  md:text-base flex-col items-center
+                        md:flex
+                        md:flex-row 
+                        md:items-center">
+                            <span>Виберіть категорію</span>
                         </option>
                         {selectedCategories.map((option) => (
-                            <option key={option.id} value={option.id.toString()}>
+                            <option key={option.id} value={option.id.toString()} className="text-xs  md:text-base">
                             {option.value}
                           </option>
                         ))}
@@ -316,27 +367,53 @@ export default function Dashboard() {
                         </div>
                         )}
                 </label>
-                <label className="text-base">
-                    Сума 
-                   <input className="p-2 border rounded-md m-2 w-[6vw]"
+                <label className="flex text-xs  md:text-base flex-col items-center
+                        md:flex
+                        md:flex-row 
+                        md:items-center">
+                    <span>Сума</span>
+                   <input className=" border rounded-md m-1 w-[6vw]
+                    mobile-landscape:w-[10vw]
+                    mobile-landscape:h-[5vw]
+                    md:w-[6vw]
+                    md:p-2
+                    md:m-2"
                    type = "number"
                    value= {amount}
                    onChange={(e) => setAmount(e.target.value)}></input>
                 </label>
-                <label className="text-base">
-                    Коментар
-                   <input className="p-2 border rounded-md m-2 w-[35vw]" maxLength={40}
+                <label className="flex text-xs  md:text-base flex-col items-center
+                        md:flex
+                        md:flex-row 
+                        md:items-center">
+                    <span>Коментар</span>
+                   <input className="p-2 border rounded-md m-1 w-[35vw]
+                    mobile-landscape:w-[15vw]
+                    mobile-landscape:h-[5vw]
+                    md:w-[35vw]
+                    md:p-2
+                    md:m-2" maxLength={40}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}></input>
                 </label>
-                <button className="bg-black text-white border border-white px-4 py-2 rounded-xl w-[7vw]
+                <button className="bg-black text-white border border-white  py-2 rounded-xl
                       hover:bg-white hover:text-black hover:border-black
+                      m-1
+                      mobile-landscape:w-[12vw]
+                      mobile-landscape:h-[6vw]
+                      md:text-base
+                      text-xs
+                      md:w-[7vw]
+                      md:m-0
+                      md:px-4
                       transition-colors duration-300"
                 onClick={handleAddTransaction}>
                     Додати
                 </button>
             </div>
-            <div className="flex items-start gap-6 p-4 mr-[1.5vw]">
+            <div className="flex items-start gap-4 p-2 mr-[1.5vw]
+            md:gap-6
+            md:p-4">
                     <TransactionTable 
                         title="Дохід" 
                         groupedTransactions={groupedIncome} 
