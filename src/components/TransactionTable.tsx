@@ -52,18 +52,19 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                                             onClick={() => toggleCategoryExpand(category)}
                                         >
                                           {expandedCategories[category] ? (
-                                            <Image src={collapseArrow} alt="collapse arrow" className=" border border-gray-500 
+                                            <Image src={collapseArrow} alt="collapse arrow" className=" 
                                             md:p-2
                                             mobile-landscape:w-[3vw]
                                             mobile-landscape:h-[3vw]
-                                            md:w-[20vw]
-                                            md:h-[20vw]" />
+                                            md:w-[2.2vw]
+                                            md:h-[2.2vw]" />
                                             ) : (
                                             <Image src={expandArrow} alt="expand arrow" className="
+                                            md:p-2
                                             mobile-landscape:w-[3vw]
                                             mobile-landscape:h-[3vw]
-                                            md:w-[20vw]
-                                            md:h-[20vw]"/>
+                                            md:w-[2.2vw]
+                                            md:h-[2.2vw]"/>
                                             )}
                                         </button>
                                     </div>

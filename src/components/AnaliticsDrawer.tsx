@@ -86,7 +86,7 @@ return (
   <>
     <button
       onClick={() => setIsOpen((p) => !p)}
-      className="absolute right-0 top-[12vh] flex h-[38rem] 
+      className="fixed right-0 top-[12vh] flex h-[calc(100vh-12vh)]
       w-[2rem] rotate-180 items-center justify-center rounded-r-full 
       border border-black bg-black text-lg tracking-widest text-white 
       transition-colors duration-300 hover:bg-white hover:text-black [text-orientation:mixed] 
