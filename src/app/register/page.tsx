@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState } from "react"; //md: phone //lg: laptop
 import { useRouter } from "next/navigation"; 
 import { signUpWithEmail,signInWithGoogle, signInWithEmail  } from "@/firebase/firebaseApi"; 
 import FloatingNumbers from "@/components/FloatingNumbers";
@@ -75,22 +75,16 @@ export default function RegisterPage() {
     >
       <div className="flex flex-col items-center justify-center min-h-screen ">
         <form onSubmit={isRegisterMode ? handleRegister : handleLogin} className="flex flex-col bg-black/80  
-        w-[calc(var(--vw)*80)]
-        mobile-landscape:w-[calc(var(--vw)*60)]
-        mobile-landscape:h-[calc(var(--vw)*50)]
-        sm:w-40
-        md:w-80
-        lg:w-96 h-[65vh] items-center 
+        md:w-[calc(var(--vw)*70)]
+        md:h-fit
+        lg:w-96 items-center 
         border  rounded-2xl z-10">
           <div className="relative inline-flex items-center cursor-pointer select-none mt-[calc(var(--vw)*2)] mb-[calc(var(--vw)*4)]" onClick={toggleAuthMode}>
             <div className={`
                 block
-                w-[calc(var(--vw)*50)]
                 h-[calc(var(--vw)*10)]
-                mobile-landscape:w-[calc(var(--vw)*30)]
-                mobile-landscape:h-[calc(var(--vw)*7)]
-                sm:w-[calc(var(--vw)*30)]
-                md:w-[calc(var(--vw)*12)]
+                md:w-[calc(var(--vw)*25)]
+                lg:w-[calc(var(--vw)*13)]
                 md:h-10 
                 rounded-full border transition-all ease-in-out duration-700
                 ${isRegisterMode 
@@ -101,8 +95,6 @@ export default function RegisterPage() {
                   absolute top-1
                  ${isRegisterMode ? "left-1 bg-white" : "right-1 bg-black"}
                   w-6 h-6
-                  mobile-landscape:w-[5.5vw]
-                  mobile-landscape:h-[5.5vw]
                   md:w-8
                   md:h-8  rounded-full shadow-md
                   transition-transform ease-in-out duration-700
@@ -117,15 +109,11 @@ export default function RegisterPage() {
           </div>
           <div className=" flex flex-col 
             gap-8
-            mobile-landscape:gap-3
             items-center mt-[calc(var(--vw)*4)] 
-            md:mt-[calc(var(--vw)*0)]
-            mobile-landscape:mt-[calc(var(--vw)*1)]">
+            md:mt-[calc(var(--vw)*0)]">
             <div className="flex flex-row items-center">
               <Image src={userIcon} alt="user" className="mr-[0.8vw]
                 w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                mobile-landscape:w-[calc(var(--vw)*4)]
-                mobile-landscape:h-[calc(var(--vw)*4)]
                 md:w-[calc(var(--vw)*2)]
                 md:h-[calc(var(--vw)*2)]" />
               <input
@@ -133,8 +121,6 @@ export default function RegisterPage() {
                 placeholder="Email"
                 className="p-2 border rounded 
                 w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                mobile-landscape:w-[calc(var(--vw)*35)]
-                mobile-landscape:h-[calc(var(--vw)*6)]
                 md:w-[calc(var(--vw)*18)]
                 md:h-[calc(var(--vw)*3)]
                 text-sm
@@ -147,8 +133,6 @@ export default function RegisterPage() {
             <div className="flex flex-row items-center">
               <Image src={passwordIcon} alt="password" className="mr-[0.8vw]
                 w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                mobile-landscape:w-[calc(var(--vw)*4)]
-                mobile-landscape:h-[calc(var(--vw)*4)]
                 md:w-[calc(var(--vw)*2)]
                 md:h-[calc(var(--vw)*2)]"/>
               <input
@@ -156,8 +140,6 @@ export default function RegisterPage() {
                 placeholder="Password"
                 className="p-2 border rounded
                 w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                mobile-landscape:w-[calc(var(--vw)*35)]
-                mobile-landscape:h-[calc(var(--vw)*6)]
                 md:w-[calc(var(--vw)*18)]
                 md:h-[calc(var(--vw)*3)]
                 text-sm
@@ -171,8 +153,6 @@ export default function RegisterPage() {
               <div className="flex items-center mb-3">
                 <Image src={passwordCheckIcon} alt="password" className="mr-2
                 w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                mobile-landscape:w-[calc(var(--vw)*4)]
-                mobile-landscape:h-[calc(var(--vw)*4)]
                 md:w-[calc(var(--vw)*2)]
                 md:h-[calc(var(--vw)*2)]" />
                 <input
@@ -180,8 +160,6 @@ export default function RegisterPage() {
                   placeholder="Confirm Password"
                   className="p-2 border rounded    
                   w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                  mobile-landscape:w-[calc(var(--vw)*35)]
-                  mobile-landscape:h-[calc(var(--vw)*6)]
                   md:w-[calc(var(--vw)*18)]
                   md:h-[calc(var(--vw)*3)]
                   text-sm
@@ -198,7 +176,7 @@ export default function RegisterPage() {
               className="bg-black text-white border border-white px-4 py-2 rounded-xl
               inline-flex items-center justify-center
               w-fit
-              mobile-landscape:h-[calc(var(--vw)*6)]
+              md:mb-[calc(var(--vw)*1)]
               text-sm
               md:text-lg
               hover:bg-white hover:text-black hover:border-black
@@ -209,14 +187,13 @@ export default function RegisterPage() {
             {errorMessage && <p className="text-red-400 mb-2">{errorMessage}</p>}
           </div>
           {!isRegisterMode && (
-            <div className="flex flex-row items-center mt-[calc(var(--vw)*3)]">
+            <div className="flex flex-row items-center mt-[calc(var(--vw)*3)]
+            md:mb-[calc(var(--vw)*1)]">
               <p className="text-white mr-[calc(var(--vw)*1)]
               text-sm
               md:text-lg">Авторизуватись через</p>
               <button
                 className="w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                mobile-landscape:w-[calc(var(--vw)*5)]
-                mobile-landscape:h-[calc(var(--vw)*5)]
                 md:w-[2.6vw]
                 md:h-[2.6vw]
                 transition-transform duration-300 hover:scale-110"
