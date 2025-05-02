@@ -17,31 +17,23 @@ export default function SettingsModal({ categories, onClose }: SettingsModalProp
     const [customCategoryIncome,setCustomCategoryIncome] = useState<string>("");
     const [customCategoryExpenses,setCustomCategoryExpenses] = useState<string>("");
 
-        const handleAddCategory = (type: string) =>{
-          if(type==="Дохід"){
-            if (!customCategoryIncome) {
-              alert("Заповніть поле!");
-              return;
-            }
-            const category = {
-                name: customCategoryIncome,
-                type: type,
-            };
-            dispatch(addCategoryAsync(category));
-            setCustomCategoryIncome("");
-          } else {
-            if (!customCategoryExpenses) {
-              alert("Заповніть поле!");
-              return;
-            }
-            const category = {
-                name: customCategoryExpenses,
-                type: type,
-            };
-            dispatch(addCategoryAsync(category));
-            setCustomCategoryExpenses("");
-          }
-       }
+
+  const handleAddCategory = (type: "Дохід" | "Витрати") => {
+    if (type === "Дохід") {
+      const category: Omit<Category, "id"> = {
+        name: customCategoryIncome,
+        type: "Дохід",   
+      };
+      dispatch(addCategoryAsync(category));
+    } else {
+      const category: Omit<Category, "id"> = {
+        name: customCategoryExpenses,
+        type: "Витрати",    
+      };
+      dispatch(addCategoryAsync(category));
+    }
+  };
+
   
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
