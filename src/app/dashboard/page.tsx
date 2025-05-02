@@ -6,7 +6,7 @@ import Image from "next/image";
 import SettingsModal from "@/components/SettingModal";
 import { useRouter } from "next/navigation"; 
 import { signOutUser} from "@/firebase/firebaseApi"; 
-import { addTransactionAsync, fetchTransactionAsync} from "@/redux/transactionActions";
+import { addTransactionAsync, fetchTransactionAsync,deleteAllTransactionsAsync} from "@/redux/transactionActions";
 import { addCategoryAsync, fetchCategoryAsync} from "@/redux/categoryActions";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -14,6 +14,7 @@ import useFirebaseAuth from "@/hooks/useFirebaseAuth";
 import TransactionTable from "@/components/TransactionTable";
 import logoutIcon from "@/icons/icons8-logout-50.png";
 import listIcon from "@/icons/icons8-list-100.png";
+import trashIcon from "@/icons/icons8-trash-128.png";
 import AnalyticsDrawer from "@/components/AnaliticsDrawer";
 
 export default function Dashboard() {
@@ -28,6 +29,7 @@ export default function Dashboard() {
     const [amount, setAmount] = useState("");
     const [comment, setComment] = useState("");
     const [settingsFormOpen, setSettingsFormOpen] = useState(false);
+    const [clearAll, setClearAll] = useState(false);
     const { user, loading } = useFirebaseAuth();
     const router = useRouter();
     const monthsUA = useMemo(
@@ -208,6 +210,10 @@ export default function Dashboard() {
         return { incomeByMonth: incomeArr, expenseByMonth: expenseArr };
     }, [transactions]);
   
+    const clearAllData = () => {
+        dispatch(deleteAllTransactionsAsync());
+        setClearAll(false);
+      };
       
 
     return(
@@ -245,6 +251,14 @@ export default function Dashboard() {
                                 mr-[1vw]
                                 transition-transform 
                                 duration-300 
+                                hover:scale-110"  onClick={()=>setClearAll(true)}><Image src={trashIcon} alt="trash"/></button>
+                <button className="w-[2vw] h-[2vw]
+                                mobile-landscape:w-[5vw]
+                                mobile-landscape:h-[5vw]
+                                mobile-landscape: mr-[2vw]
+                                mr-[1vw]
+                                transition-transform 
+                                duration-300 
                                 hover:scale-110"
                         onClick={()=>setSettingsFormOpen(true)}><Image src={listIcon} alt="settings"/></button>
                 <button className="w-[2vw] h-[2vw]
@@ -265,6 +279,31 @@ export default function Dashboard() {
                 categories={categories}
                 onClose={() => setSettingsFormOpen(false)}
             />
+        )}
+        {clearAll && (
+            <div className="
+            fixed inset-0 z-50 flex items-center justify-center bg-black/50
+            ">
+                <div className="w-[92vw] max-w-md rounded-2xl bg-white p-4 shadow-xl flex flex-col items-center 
+                    mobile-landscape:w-[75vw]
+                    mobile-landscape:h-fit
+                    mobile-landscape:p-1
+                    md:w-[92vw]">
+                    <button className="flex place-self-end text-black mobile-landscape:mr-[1vw] mobile-landscape:text-xs" onClick={() => setClearAll(false)}>X</button>
+                    <div className="w-full text-center mb-[1vw]">Ви впевнені що хочете очистити всю інформацію по транзакціям за цей рік?</div>
+                    <button className="w-[10vw] h-[2vw]
+                                    mobile-landscape:w-[25vw]
+                                    mobile-landscape:h-[5vw]
+                                    mobile-landscape: mr-[1vw]
+                                    mr-[0.5vw]
+                                    transition-transform 
+                                    duration-300 
+                                    hover:scale-110
+                                    bg-red-600
+                                    rounded-xl
+                                    text-white" onClick={()=>clearAllData()}>Підтверджую</button>
+                </div>
+            </div>
         )}
         <main className="w-screen ">
             <div className="bg-gray-200 

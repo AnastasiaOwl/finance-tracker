@@ -1,6 +1,6 @@
 "use client"
-import { addTransaction, setTransactions, deleteTransaction } from "./transactionSlice";
-import { addTransactionToFirestore, fetchTransactions, deleteTransactionFirestore  } from "@/firebase/firebaseApi";
+import { addTransaction, setTransactions, deleteTransaction, clearAllTransactions } from "./transactionSlice";
+import { addTransactionToFirestore, fetchTransactions, deleteTransactionFirestore, deleteAllTransactionsFirestore  } from "@/firebase/firebaseApi";
 import { Transaction } from "@/redux/transactionSlice";
 import { AppDispatch } from "./store";
 
@@ -36,3 +36,13 @@ export const fetchTransactionAsync =
     console.error("❌ Error loading transactions:", error);
   }
 }
+
+export const deleteAllTransactionsAsync = () => async (dispatch: AppDispatch) => {
+  try {
+    await deleteAllTransactionsFirestore();
+    dispatch(clearAllTransactions());
+    console.log("✅ Transactions cleared from Redux and Firestore");
+  } catch (error) {
+    console.error("❌ Error clearing transactions:", error);
+  }
+};

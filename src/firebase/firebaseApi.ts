@@ -203,3 +203,17 @@ export const fetchTransactions = async (): Promise<Transaction[]> => {
   }
 };
 
+export async function deleteAllTransactionsFirestore() {
+  const user = auth.currentUser;
+  if (!user) throw new Error("No user is currently logged in!");
+  const userId = user.uid;
+  const txCollection = collection(db, "users", userId, "transactions");
+  const snapshot = await getDocs(txCollection);
+  await Promise.all(
+    snapshot.docs.map((d) =>
+      deleteDoc(doc(db, "users", userId, "transactions", d.id))
+    )
+  );
+
+  console.log("✅ All transactions deleted in Firestore");
+}
