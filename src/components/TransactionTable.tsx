@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
 import { deleteTransactionAsync } from "@/redux/transactionActions";
 import { Transaction } from "@/redux/transactionSlice";
 import collapseArrow from "../icons/collapse-arrow.png";
@@ -23,7 +24,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
     totalSum,
     color,
 }) => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     return (
         <div className="w-1/2 bg-white shadow-md rounded-lg p-2
