@@ -45,15 +45,16 @@ export default function IncomePieChart({
     ],
   };
 
+  const isMobileLandscape =
+  typeof window !== "undefined" &&
+  window.matchMedia("(max-width:639px) and (orientation: landscape)").matches;
 
   const options: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: () => {
-          return !window.matchMedia('(max-width: 639px) and (orientation: landscape)').matches;
-        }
+        display: !isMobileLandscape,
       },
   
       datalabels: {
