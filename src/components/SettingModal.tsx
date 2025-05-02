@@ -45,28 +45,50 @@ export default function SettingsModal({ categories, onClose }: SettingsModalProp
   
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="w-[92vw] max-w-md rounded-2xl bg-white p-4 shadow-xl">
+        <div className="w-[92vw] max-w-md rounded-2xl bg-white p-4 shadow-xl
+        mobile-landscape:w-[75vw]
+        mobile-landscape:h-fit
+        mobile-landscape:p-1
+        md:w-[92vw]">
         <button
             onClick={onClose}
-            className="ml-[26vw] text-black"
+            className="ml-[26vw] text-black mobile-landscape:ml-[0.5vw] mobile-landscape:text-xs"
           >
             X
           </button>
-          <h2 className="mb-4 text-xl font-semibold place-self-center">Категорії</h2>
-          <div className="flex flex-row w-[89vw]">
-            <div className="flex flex-col w-[13vw] mr-[0.5vw]">
-                <h3 className="mb-2 text-lg font-medium text-green-600 place-self-center">Дохід</h3>
-                <div>
+          <h2 className="mb-4 text-xl font-semibold place-self-center 
+          mobile-landscape:text-xs
+          mobile-landscape:mb-2">Категорії</h2>
+          <div className="flex flex-row justify-evenly
+          mobile-landscape:w-[65vw]
+          md:w-[27vw]
+          ">
+            <div className="flex flex-col mr-[5vw]
+            mobile-landscape:text-xs
+            mobile-landscape:w-[33vw]
+            md:w-[13vw] md:mr-[0.5vw]">
+                <h3 className="mb-2 text-lg font-medium text-green-600 place-self-center 
+                mobile-landscape:text-xs
+                mobile-landscape:mb-1">Дохід</h3>
+                <div className="flex flex-row items-center">
                     <input  type="text"
                             placeholder="введіть категорію"
                             value={customCategoryIncome}
                             onChange={(e) => setCustomCategoryIncome(e.target.value)}
-                            className="p-2 border rounded-md"
-                            style={{ width: "175px", margin:"0.3vw" }}>
+                            className="p-2 border rounded-md 
+                            mobile-landscape:w-[28vw]
+                            mobile-landscape:mb-1
+                            md:w-[11vw]
+                            md:mr-[0.5vw]">
                     </input>
                     <button
                             onClick={() => handleAddCategory("Дохід")}
-                            className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800"
+                            className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800
+                            mobile-landscape:w-[4vw]
+                            mobile-landscape:h-[4vw]
+                            mobile-landscape:ml-[1vw]
+                            md:w-[1.5vw]
+                            md:h-[1.5vw]"
                             >
                             +
                     </button>
@@ -89,19 +111,32 @@ export default function SettingsModal({ categories, onClose }: SettingsModalProp
                 </ul>
             </div>
     
-            <div className="flex flex-col w-[13vw] ml-[0.5vw]">
-                <h3 className="mb-2 text-lg font-medium text-red-600 place-self-center">Витрати</h3>
-                <div>
+            <div className="flex flex-col 
+            mobile-landscape:text-xs
+            mobile-landscape:w-[33vw]
+            md:w-[13vw]">
+                <h3 className="mb-2 text-lg font-medium text-red-600 place-self-center 
+                mobile-landscape:text-xs
+                mobile-landscape:mb-1">Витрати</h3>
+                <div className="flex flex-row items-center">
                     <input  type="text"
                             placeholder="введіть категорію"
                             value={customCategoryExpenses}
                             onChange={(e) => setCustomCategoryExpenses(e.target.value)}
-                            className="p-2 border rounded-md"
-                            style={{ width: "175px", margin:"0.3vw" }}>
+                            className="p-2 border rounded-md
+                            mobile-landscape:w-[28vw]
+                            mobile-landscape:mb-1
+                            md:w-[11vw]
+                            md:mr-[0.5vw]">
                     </input>
                     <button
                             onClick={() => handleAddCategory("Витрати")}
-                            className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800"
+                            className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800
+                             mobile-landscape:w-[4vw]
+                            mobile-landscape:h-[4vw]
+                            mobile-landscape:ml-[1vw]
+                             md:w-[1.5vw]
+                            md:h-[1.5vw]"
                             >
                             +
                     </button>

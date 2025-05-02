@@ -46,29 +46,33 @@ export default function IncomePieChart({
   };
 
 
-  const options: ChartOptions<"pie"> = {
+  const options: ChartOptions<'pie'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
+      legend: {
+        display: () => {
+          return !window.matchMedia('(max-width: 639px) and (orientation: landscape)').matches;
+        }
+      },
+  
       datalabels: {
-        formatter: (value: number, context: DatalabelsContext) => {
-          const data = context.chart.data.datasets[0].data as number[];
-          const total = data.reduce((sum, v) => sum + v, 0);
-          return ((value / total) * 100).toFixed(1) + "%";
+        formatter: (value, ctx) => {
+          const arr = ctx.chart.data.datasets[0].data as number[];
+          const total = arr.reduce((sum, v) => sum + v, 0);
+          return ((value / total) * 100).toFixed(1) + '%';
         },
-        color: "black",
-        anchor: "center",
-        align: "center",
-        font: {
-          size: 14,
-          weight: "bold",
-        },
+        color: 'black',
+        anchor: 'center',
+        align:  'center',
+        font:    { size: 14, weight: 'bold' },
       },
     },
-  };  
+  }
+  
 
   return (
-    <div className="w-80 h-80">
+    <div className="w-full h-full">
       <Pie data={chartData} options={options} />
     </div>
   );

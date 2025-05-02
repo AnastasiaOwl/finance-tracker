@@ -9,6 +9,8 @@ import {
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import type { ChartOptions } from "chart.js";
+import type { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
 import { Bar } from "react-chartjs-2";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend, ChartDataLabels);
@@ -35,60 +37,70 @@ export default function IncomeExpenseBar({ totalIncome, totalExpenses }: Props) 
     ],
   };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      datalabels: {
-        display: true,
+const options: ChartOptions<"bar"> = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    datalabels: {
+      display: true,
+      color: "black",
+      anchor: "end" as const,
+      align: "end" as const,
+      offset: -4,
+      font: (ctx: DatalabelsContext) => {
+        const isLandscape = ctx.chart.width > ctx.chart.height;
+        return { size: isLandscape ? 10 : 14, weight: "bold" };
+      },
+    },
+
+    legend: {
+      labels: {
         color: "black",
-        anchor: "end" as const,
-        align: "end" as const,
-        offset: -4,
-        font: {
-          size: 14,
-          weight: "bold" as const,
-        },
-      },      
-      legend: {
-        labels: {
-          color: "black",
-          font: {
-            size: 16,
-          },
-        },
-      },
-      tooltip: {
-        bodyFont: {
-          size: 14,
-        },
-        titleFont: {
-          size: 16,
+        font: (ctx) => {
+          const chart = ctx.chart;
+          const isLandscape = chart.width > chart.height;
+          return { size: isLandscape ? 12 : 19 };
         },
       },
     },
-    scales: {
-      x: {
-        ticks: {
-          color: "black",
-          font: {
-            size: 14,
-          },
-        },
+
+    tooltip: {
+      bodyFont: (ctx) => {
+        const chart = ctx.chart;
+        return { size: chart.width > chart.height ? 12 : 19 };
       },
-      y: {
-        ticks: {
-          color: "black",
-          font: {
-            size: 14,
-          },
+      titleFont: (ctx) => {
+        const chart = ctx.chart;
+        return { size: chart.width > chart.height ? 14 : 16 };
+      },
+    },
+  },
+
+  scales: {
+    x: {
+      ticks: {
+        color: "black",
+        font: (ctx) => {
+          const chart = ctx.chart;
+          return { size: chart.width > chart.height ? 10 : 16 };
         },
       },
     },
-  };
+    y: {
+      ticks: {
+        color: "black",
+        font: (ctx) => {
+          const chart = ctx.chart;
+          return { size: chart.width > chart.height ? 10 : 16 };
+        },
+      },
+    },
+  },
+};
+
 
   return (
-    <div style={{ width: "500px", height: "350px", margin: "1vw", placeSelf: "self-center"}}>
+    <div className="w-full h-full">
       <Bar data={data} options={options} />
     </div>
   );

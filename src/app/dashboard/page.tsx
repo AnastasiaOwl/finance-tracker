@@ -282,7 +282,7 @@ export default function Dashboard() {
                         md:flex
                         md:flex-row 
                         md:items-center">
-                        <span>Тип</span>
+                        Тип
                         <select
                             value={selectedTypeKey}
                             onChange={(e) => setSelectedTypeKey(parseInt(e.target.value))}
@@ -304,7 +304,7 @@ export default function Dashboard() {
                         md:flex
                         md:flex-row 
                         md:items-center">
-                    <span>Категорія</span> 
+                    Категорія
                     {!showCustomInput ? (
                         <select
                         value={selectedCategoryKey}
@@ -329,7 +329,7 @@ export default function Dashboard() {
                         md:flex
                         md:flex-row 
                         md:items-center">
-                            <span>Виберіть категорію</span>
+                        Виберіть категорію
                         </option>
                         {selectedCategories.map((option) => (
                             <option key={option.id} value={option.id.toString()} className="text-xs  md:text-base">
@@ -338,28 +338,39 @@ export default function Dashboard() {
                         ))}
                         </select>                    
                         ) : (
-                        <div className="inline-flex items-end gap-2 m-2">
+                        <div className="inline-flex items-end gap-2 m-1
+                        md:m-2">
                             <input
                             type="text"
-                            placeholder="введіть свою категорію"
+                            placeholder="своя категорія"
                             value={customCategory}
                             onChange={(e) => setCustomCategory(e.target.value)}
-                            className="p-2 border rounded-md"
-                            style={{ width: "190px" }}
+                            className=" border rounded-md
+                            mobile-landscape:w-[21vw]
+                            mobile-landscape:h-[5vw]
+                            md:p-2
+                            md:w-[14vw]"
                             />
-                            <div className="flex flex-col items-end gap-2">
+                            <div className="flex flex-col items-end gap-2
+                            mobile-landscape:gap-1">
                                 <button
                                     onClick={() => {
                                     setShowCustomInput(false);
                                     setCustomCategory("");
                                     }}
-                                    className="bg-red-600 text-white text-xs px-1 py-0.3 rounded hover:bg-red-700"
+                                    className="bg-red-600 text-white text-xs px-1 py-0.3 rounded hover:bg-red-700
+                                    mobile-landscape:w-[2.2vw]
+                                    mobile-landscape:h-[2.2vw]
+                                    mobile-landscape:text-[0.4rem] "
                                 >
-                                    X
+                                    x
                                 </button>
                                 <button
                                     onClick={handleAddCategory}
-                                    className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800"
+                                    className="bg-black text-white text-xs px-1 py-0.3 rounded hover:bg-gray-800
+                                    mobile-landscape:w-[2.2vw]
+                                    mobile-landscape:h-[2.2vw]
+                                    mobile-landscape:text-[0.4rem]"
                                 >
                                     +
                                 </button>
@@ -371,7 +382,7 @@ export default function Dashboard() {
                         md:flex
                         md:flex-row 
                         md:items-center">
-                    <span>Сума</span>
+                    Сума
                    <input className=" border rounded-md m-1 w-[6vw]
                     mobile-landscape:w-[10vw]
                     mobile-landscape:h-[5vw]
@@ -386,7 +397,7 @@ export default function Dashboard() {
                         md:flex
                         md:flex-row 
                         md:items-center">
-                    <span>Коментар</span>
+                    Коментар
                    <input className="p-2 border rounded-md m-1 w-[35vw]
                     mobile-landscape:w-[15vw]
                     mobile-landscape:h-[5vw]
@@ -400,7 +411,7 @@ export default function Dashboard() {
                       hover:bg-white hover:text-black hover:border-black
                       m-1
                       mobile-landscape:w-[12vw]
-                      mobile-landscape:h-[6vw]
+                      mobile-landscape:h-[7vw]
                       md:text-base
                       text-xs
                       md:w-[7vw]
