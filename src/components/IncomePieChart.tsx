@@ -6,7 +6,7 @@ import {
     Legend,
   } from "chart.js";
   import type { ChartOptions } from "chart.js";
-  import ChartDataLabels, { Context as DatalabelsContext } from "chartjs-plugin-datalabels";
+  import ChartDataLabels from "chartjs-plugin-datalabels";
   import { Pie } from "react-chartjs-2";
   
   ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
