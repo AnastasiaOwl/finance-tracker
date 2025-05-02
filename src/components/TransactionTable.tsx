@@ -55,15 +55,15 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                                           {expandedCategories[category] ? (
                                             <Image src={collapseArrow} alt="collapse arrow" className=" 
                                             md:p-2
-                                            mobile-landscape:w-[3vw]
-                                            mobile-landscape:h-[3vw]
+                                            mobile-landscape:w-[calc(var(--vw)*3)]
+                                            mobile-landscape:h-[calc(var(--vw)*3)]
                                             md:w-[2.2vw]
                                             md:h-[2.2vw]" />
                                             ) : (
                                             <Image src={expandArrow} alt="expand arrow" className="
                                             md:p-2
-                                            mobile-landscape:w-[3vw]
-                                            mobile-landscape:h-[3vw]
+                                            mobile-landscape:w-[calc(var(--vw)*3)]
+                                            mobile-landscape:h-[calc(var(--vw)*3)]
                                             md:w-[2.2vw]
                                             md:h-[2.2vw]"/>
                                             )}

@@ -220,21 +220,21 @@ export default function Dashboard() {
         <>
         <header className="bg-black text-white py-4 vw-6
          relative w-screen flex justify-between items-center
-         h-[10vw]
-         mobile-landscape:h-[8vw]
+         h-[calc(var(--vw)*10)]
+         mobile-landscape:h-[calc(var(--vw)*8)]
          md:h-[4.5vw] ">
             <select
                 value={selectedMonthIndex}
                 onChange={(e) => setSelectedMonthIndex(parseInt(e.target.value, 10))}
                 className="ml-4 mr-4 rounded-md border
-                            w-[30vw]
-                            h-[8vw]
+                            w-[calc(var(--vw)*30)]
+                            h-[calc(var(--vw)*8)]
                             text-xs
-                            mobile-landscape:w-[19vw]
-                            mobile-landscape:h-[5vw]
+                            mobile-landscape:w-[calc(var(--vw)*19)]
+                            mobile-landscape:h-[calc(var(--vw)*5)]
                             md:text-base
-                            md:w-[8vw]
-                            md:h-[2vw]
+                            md:w-[calc(var(--vw)*8)]
+                            md:h-[calc(var(--vw)*2)]
                             border-white bg-black px-2 py-1 text-white focus:outline-none"
                 >
                 {monthsUA.map((month, idx) => (
@@ -244,27 +244,27 @@ export default function Dashboard() {
                 ))}
             </select>
             <div>
-                <button className="w-[2vw] h-[2vw]
-                                mobile-landscape:w-[5vw]
-                                mobile-landscape:h-[5vw]
-                                mobile-landscape: mr-[2vw]
-                                mr-[1vw]
+                <button className="w-[calc(var(--vw)*2)] h-[calc(var(--vw)*2)]
+                                mobile-landscape:w-[calc(var(--vw)*5)]
+                                mobile-landscape:h-[calc(var(--vw)*5)]
+                                mobile-landscape: mr-[calc(var(--vw)*2)]
+                                mr-[calc(var(--vw)*1)]
                                 transition-transform 
                                 duration-300 
                                 hover:scale-110"  onClick={()=>setClearAll(true)}><Image src={trashIcon} alt="trash"/></button>
-                <button className="w-[2vw] h-[2vw]
-                                mobile-landscape:w-[5vw]
-                                mobile-landscape:h-[5vw]
-                                mobile-landscape: mr-[2vw]
-                                mr-[1vw]
+                <button className="w-[calc(var(--vw)*2)] h-[calc(var(--vw)*2)]
+                                mobile-landscape:w-[calc(var(--vw)*5)]
+                                mobile-landscape:h-[calc(var(--vw)*5)]
+                                mobile-landscape: mr-[calc(var(--vw)*2)]
+                                mr-[calc(var(--vw)*1)]
                                 transition-transform 
                                 duration-300 
                                 hover:scale-110"
                         onClick={()=>setSettingsFormOpen(true)}><Image src={listIcon} alt="settings"/></button>
-                <button className="w-[2vw] h-[2vw]
-                                mobile-landscape:w-[5vw]
-                                mobile-landscape:h-[5vw]
-                                mobile-landscape: mr-[1vw]
+                <button className="w-[calc(var(--vw)*2)] h-[calc(var(--vw)*2)]
+                                mobile-landscape:w-[calc(var(--vw)*5)]
+                                mobile-landscape:h-[calc(var(--vw)*5)]
+                                mobile-landscape: mr-[calc(var(--vw)*1)]
                                 mr-[0.5vw]
                                 transition-transform 
                                 duration-300 
@@ -284,17 +284,17 @@ export default function Dashboard() {
             <div className="
             fixed inset-0 z-50 flex items-center justify-center bg-black/50
             ">
-                <div className="w-[92vw] max-w-md rounded-2xl bg-white p-4 shadow-xl flex flex-col items-center 
-                    mobile-landscape:w-[75vw]
+                <div className="w-[calc(var(--vw)*92)] max-w-md rounded-2xl bg-white p-4 shadow-xl flex flex-col items-center 
+                    mobile-landscape:w-[calc(var(--vw)*75)]
                     mobile-landscape:h-fit
                     mobile-landscape:p-1
-                    md:w-[92vw]">
-                    <button className="flex place-self-end text-black mobile-landscape:mr-[1vw] mobile-landscape:text-xs" onClick={() => setClearAll(false)}>X</button>
-                    <div className="w-full text-center mb-[1vw]">Ви впевнені що хочете очистити всю інформацію по транзакціям за цей рік?</div>
-                    <button className="w-[10vw] h-[2vw]
-                                    mobile-landscape:w-[25vw]
-                                    mobile-landscape:h-[5vw]
-                                    mobile-landscape: mr-[1vw]
+                    md:w-[calc(var(--vw)*92)]">
+                    <button className="flex place-self-end text-black mobile-landscape:mr-[calc(var(--vw)*1)] mobile-landscape:text-xs" onClick={() => setClearAll(false)}>X</button>
+                    <div className="w-full text-center mb-[calc(var(--vw)*1)]">Ви впевнені що хочете очистити всю інформацію по транзакціям за цей рік?</div>
+                    <button className="w-[calc(var(--vw)*10)] h-[calc(var(--vw)*2)]
+                                    mobile-landscape:w-[calc(var(--vw)*25)]
+                                    mobile-landscape:h-[calc(var(--vw)*5)]
+                                    mobile-landscape: mr-[calc(var(--vw)*1)]
                                     mr-[0.5vw]
                                     transition-transform 
                                     duration-300 
@@ -307,10 +307,10 @@ export default function Dashboard() {
         )}
         <main className="w-screen ">
             <div className="bg-gray-200 
-                            w-[95vw]
-                            mobile-landscape:w-[95vw]
-                            mobile-landscape:h-[12vw]
-                            sm:w-[95vw]
+                            w-[calc(var(--vw)*95)]
+                            mobile-landscape:w-[calc(var(--vw)*95)]
+                            mobile-landscape:h-[calc(var(--vw)*12)]
+                            sm:w-[calc(var(--vw)*95)]
                             flex gap-2
                             md:gap-5
                             md:gap-3 
@@ -326,8 +326,8 @@ export default function Dashboard() {
                             value={selectedTypeKey}
                             onChange={(e) => setSelectedTypeKey(parseInt(e.target.value))}
                             className=" border rounded-md m-1
-                            mobile-landscape:w-[12vw]
-                            mobile-landscape:h-[5vw]
+                            mobile-landscape:w-[calc(var(--vw)*12)]
+                            mobile-landscape:h-[calc(var(--vw)*5)]
                             md:p-2
                             md:m-2
                             text-xs  md:text-base"
@@ -357,9 +357,9 @@ export default function Dashboard() {
                             }
                         }}
                         className=" border rounded-md m-1
-                            mobile-landscape:w-[28vw]
-                            mobile-landscape:h-[5vw]
-                            md:w-[14vw]
+                            mobile-landscape:w-[calc(var(--vw)*28)]
+                            mobile-landscape:h-[calc(var(--vw)*5)]
+                            md:w-[calc(var(--vw)*14)]
                             md:p-2
                             md:m-2
                             text-xs  md:text-base"
@@ -385,10 +385,10 @@ export default function Dashboard() {
                             value={customCategory}
                             onChange={(e) => setCustomCategory(e.target.value)}
                             className=" border rounded-md
-                            mobile-landscape:w-[21vw]
-                            mobile-landscape:h-[5vw]
+                            mobile-landscape:w-[calc(var(--vw)*21)]
+                            mobile-landscape:h-[calc(var(--vw)*5)]
                             md:p-2
-                            md:w-[14vw]"
+                            md:w-[calc(var(--vw)*14)]"
                             />
                             <div className="flex flex-col items-end gap-2
                             mobile-landscape:gap-1">
@@ -422,10 +422,10 @@ export default function Dashboard() {
                         md:flex-row 
                         md:items-center">
                     Сума
-                   <input className=" border rounded-md m-1 w-[6vw]
-                    mobile-landscape:w-[10vw]
-                    mobile-landscape:h-[5vw]
-                    md:w-[6vw]
+                   <input className=" border rounded-md m-1 w-[calc(var(--vw)*6)]
+                    mobile-landscape:w-[calc(var(--vw)*10)]
+                    mobile-landscape:h-[calc(var(--vw)*5)]
+                    md:w-[calc(var(--vw)*6)]
                     md:p-2
                     md:m-2"
                    type = "number"
@@ -437,10 +437,10 @@ export default function Dashboard() {
                         md:flex-row 
                         md:items-center">
                     Коментар
-                   <input className="p-2 border rounded-md m-1 w-[35vw]
-                    mobile-landscape:w-[15vw]
-                    mobile-landscape:h-[5vw]
-                    md:w-[35vw]
+                   <input className="p-2 border rounded-md m-1 w-[calc(var(--vw)*35)]
+                    mobile-landscape:w-[calc(var(--vw)*15)]
+                    mobile-landscape:h-[calc(var(--vw)*5)]
+                    md:w-[calc(var(--vw)*35)]
                     md:p-2
                     md:m-2" maxLength={40}
                     value={comment}
@@ -449,11 +449,11 @@ export default function Dashboard() {
                 <button className="bg-black text-white border border-white  py-2 rounded-xl
                       hover:bg-white hover:text-black hover:border-black
                       m-1
-                      mobile-landscape:w-[12vw]
-                      mobile-landscape:h-[7vw]
+                      mobile-landscape:w-[calc(var(--vw)*12)]
+                      mobile-landscape:h-[calc(var(--vw)*7)]
                       md:text-base
                       text-xs
-                      md:w-[7vw]
+                      md:w-[calc(var(--vw)*7)]
                       md:m-0
                       md:px-4
                       transition-colors duration-300"

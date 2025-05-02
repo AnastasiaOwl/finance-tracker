@@ -34,27 +34,27 @@ export default function AnalyticsDrawer({ incomeCategoryData,
   switch (selectedGraph) {
     case "pie":
       return (
-        <div className="m-[2vw] w-[45vw] h-fit rounded-xl border border-black p-3
+        <div className="m-[calc(var(--vw)*2)] w-[calc(var(--vw)*45)] h-fit rounded-xl border border-black p-3
          mobile-landscape:p-2
-         mobile-landscape:w-[75vw]
-         mobile-landscape:h-[40vw]
-         mobile-landscape:m-[1vw]">
+         mobile-landscape:w-[calc(var(--vw)*75)]
+         mobile-landscape:h-[calc(var(--vw)*40)]
+         mobile-landscape:m-[calc(var(--vw)*1)]">
           <h2 className="mb-4 text-center text-xl font-medium
            mobile-landscape:text-xs
            mobile-landscape:mb-1">
             Секторна діаграма — {currentMonthName}
           </h2>
           <div className="flex gap-6 justify-evenly">
-            <div className="flex flex-col items-center w-[24vw] h-[24vw]
-            mobile-landscape:w-[29vw]
-            mobile-landscape:h-[29vw]
+            <div className="flex flex-col items-center w-[calc(var(--vw)*24)] h-[calc(var(--vw)*24)]
+            mobile-landscape:w-[calc(var(--vw)*29)]
+            mobile-landscape:h-[calc(var(--vw)*29)]
             mobile-landscape:mb-1">
               <h3 className="mb-2 font-semibold mobile-landscape:mb-1">Дохід</h3>
               <IncomePieChart data={incomeCategoryData} variant={"Дохід"} />
             </div>
-            <div className="flex flex-col items-center w-[24vw] h-[24vw]
-            mobile-landscape:w-[29vw]
-            mobile-landscape:h-[29vw]">
+            <div className="flex flex-col items-center w-[calc(var(--vw)*24)] h-[calc(var(--vw)*24)]
+            mobile-landscape:w-[calc(var(--vw)*29)]
+            mobile-landscape:h-[calc(var(--vw)*29)]">
               <h3 className="mb-2 font-semibold mobile-landscape:mb-1">Витрати</h3>
               <IncomePieChart data={expenseCategoryData} variant={"Витрати"} />
             </div>
@@ -64,10 +64,10 @@ export default function AnalyticsDrawer({ incomeCategoryData,
 
     case "bar":
       return (
-        <div className="m-[2vw] w-[45vw] h-[28vw] rounded-xl border border-black p-4
-         mobile-landscape:w-[75vw]
-         mobile-landscape:h-[40vw]
-         mobile-landscape:m-[1vw]">
+        <div className="m-[calc(var(--vw)*2)] w-[calc(var(--vw)*45)] h-[calc(var(--vw)*28)] rounded-xl border border-black p-4
+         mobile-landscape:w-[calc(var(--vw)*75)]
+         mobile-landscape:h-[calc(var(--vw)*40)]
+         mobile-landscape:m-[calc(var(--vw)*1)]">
           <h2 className="mb-4 text-center text-xl font-medium
           mobile-landscape:text-xs
            mobile-landscape:mb-1">
@@ -82,11 +82,11 @@ export default function AnalyticsDrawer({ incomeCategoryData,
 
     case "line":
       return (
-        <div className="m-[2vw] w-[43vw] h-[28vw]  rounded-xl border border-black p-4
-         mobile-landscape:w-[75vw]
-         mobile-landscape:h-[40vw]
+        <div className="m-[calc(var(--vw)*2)] w-[calc(var(--vw)*43)] h-[calc(var(--vw)*28)]  rounded-xl border border-black p-4
+         mobile-landscape:w-[calc(var(--vw)*75)]
+         mobile-landscape:h-[calc(var(--vw)*40)]
          mobile-landscape:p-2
-         mobile-landscape:m-[1vw]">
+         mobile-landscape:m-[calc(var(--vw)*1)]">
           <h2 className="mb-4 text-center text-xl font-medium
           mobile-landscape:text-xs
            mobile-landscape:mb-1">
@@ -121,14 +121,14 @@ return (
       Аналітика
     </button>
     <div
-      className={`fixed right-0 top-[12vh] w-[50vw] h-fit rounded-3xl md:pb-[1vw] border border-black bg-white shadow transition-transform ${isOpen ? "translate-x-0" : "translate-x-full"}
+      className={`fixed right-0 top-[12vh] w-[calc(var(--vw)*50)] h-fit rounded-3xl md:pb-[calc(var(--vw)*1)] border border-black bg-white shadow transition-transform ${isOpen ? "translate-x-0" : "translate-x-full"}
         mobile-landscape:w-fit
         mobile-landscape:top-[15vh]
         mobile-landscape:text-xs
-        mobile-landscape:pb-[1vw]
+        mobile-landscape:pb-[calc(var(--vw)*1)]
         md:bottom-0`}
     >
-      <button onClick={() => setIsOpen(false)} className="p-2 ml-[1vw]
+      <button onClick={() => setIsOpen(false)} className="p-2 ml-[calc(var(--vw)*1)]
        mobile-landscape:p-1">
         X
       </button>

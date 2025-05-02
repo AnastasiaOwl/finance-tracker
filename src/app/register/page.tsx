@@ -75,22 +75,22 @@ export default function RegisterPage() {
     >
       <div className="flex flex-col items-center justify-center min-h-screen ">
         <form onSubmit={isRegisterMode ? handleRegister : handleLogin} className="flex flex-col bg-black/80  
-        w-[80vw]
-        mobile-landscape:w-[60vw]
-        mobile-landscape:h-[50vw]
+        w-[calc(var(--vw)*80)]
+        mobile-landscape:w-[calc(var(--vw)*60)]
+        mobile-landscape:h-[calc(var(--vw)*50)]
         sm:w-40
         md:w-80
         lg:w-96 h-[65vh] items-center 
         border  rounded-2xl z-10">
-          <div className="relative inline-flex items-center cursor-pointer select-none mt-[2vw] mb-[4vw]" onClick={toggleAuthMode}>
+          <div className="relative inline-flex items-center cursor-pointer select-none mt-[calc(var(--vw)*2)] mb-[calc(var(--vw)*4)]" onClick={toggleAuthMode}>
             <div className={`
                 block
-                w-[50vw]
-                h-[10vw]
-                mobile-landscape:w-[30vw]
-                mobile-landscape:h-[7vw]
-                sm:w-[30vw]
-                md:w-[12vw]
+                w-[calc(var(--vw)*50)]
+                h-[calc(var(--vw)*10)]
+                mobile-landscape:w-[calc(var(--vw)*30)]
+                mobile-landscape:h-[calc(var(--vw)*7)]
+                sm:w-[calc(var(--vw)*30)]
+                md:w-[calc(var(--vw)*12)]
                 md:h-10 
                 rounded-full border transition-all ease-in-out duration-700
                 ${isRegisterMode 
@@ -118,25 +118,25 @@ export default function RegisterPage() {
           <div className=" flex flex-col 
             gap-8
             mobile-landscape:gap-3
-            items-center mt-[4vw] 
-            md:mt-[0vw]
-            mobile-landscape:mt-[1vw]">
+            items-center mt-[calc(var(--vw)*4)] 
+            md:mt-[calc(var(--vw)*0)]
+            mobile-landscape:mt-[calc(var(--vw)*1)]">
             <div className="flex flex-row items-center">
               <Image src={userIcon} alt="user" className="mr-[0.8vw]
-                w-[8vw] h-[8vw]
-                mobile-landscape:w-[4vw]
-                mobile-landscape:h-[4vw]
-                md:w-[2vw]
-                md:h-[2vw]" />
+                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
+                mobile-landscape:w-[calc(var(--vw)*4)]
+                mobile-landscape:h-[calc(var(--vw)*4)]
+                md:w-[calc(var(--vw)*2)]
+                md:h-[calc(var(--vw)*2)]" />
               <input
                 type="email"
                 placeholder="Email"
                 className="p-2 border rounded 
-                w-[46vw] h-[10vw]
-                mobile-landscape:w-[35vw]
-                mobile-landscape:h-[6vw]
-                md:w-[18vw]
-                md:h-[3vw]
+                w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
+                mobile-landscape:w-[calc(var(--vw)*35)]
+                mobile-landscape:h-[calc(var(--vw)*6)]
+                md:w-[calc(var(--vw)*18)]
+                md:h-[calc(var(--vw)*3)]
                 text-sm
                 md:text-lg"
                 value={email}
@@ -146,20 +146,20 @@ export default function RegisterPage() {
             </div>
             <div className="flex flex-row items-center">
               <Image src={passwordIcon} alt="password" className="mr-[0.8vw]
-                w-[8vw] h-[8vw]
-                mobile-landscape:w-[4vw]
-                mobile-landscape:h-[4vw]
-                md:w-[2vw]
-                md:h-[2vw]"/>
+                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
+                mobile-landscape:w-[calc(var(--vw)*4)]
+                mobile-landscape:h-[calc(var(--vw)*4)]
+                md:w-[calc(var(--vw)*2)]
+                md:h-[calc(var(--vw)*2)]"/>
               <input
                 type="password"
                 placeholder="Password"
                 className="p-2 border rounded
-                w-[46vw] h-[10vw]
-                mobile-landscape:w-[35vw]
-                mobile-landscape:h-[6vw]
-                md:w-[18vw]
-                md:h-[3vw]
+                w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
+                mobile-landscape:w-[calc(var(--vw)*35)]
+                mobile-landscape:h-[calc(var(--vw)*6)]
+                md:w-[calc(var(--vw)*18)]
+                md:h-[calc(var(--vw)*3)]
                 text-sm
                 md:text-lg"
                 value={password}
@@ -170,20 +170,20 @@ export default function RegisterPage() {
               {isRegisterMode && (
               <div className="flex items-center mb-3">
                 <Image src={passwordCheckIcon} alt="password" className="mr-2
-                w-[8vw] h-[8vw]
-                mobile-landscape:w-[4vw]
-                mobile-landscape:h-[4vw]
-                md:w-[2vw]
-                md:h-[2vw]" />
+                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
+                mobile-landscape:w-[calc(var(--vw)*4)]
+                mobile-landscape:h-[calc(var(--vw)*4)]
+                md:w-[calc(var(--vw)*2)]
+                md:h-[calc(var(--vw)*2)]" />
                 <input
                   type="password"
                   placeholder="Confirm Password"
                   className="p-2 border rounded    
-                  w-[46vw] h-[10vw]
-                  mobile-landscape:w-[35vw]
-                  mobile-landscape:h-[6vw]
-                  md:w-[18vw]
-                  md:h-[3vw]
+                  w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
+                  mobile-landscape:w-[calc(var(--vw)*35)]
+                  mobile-landscape:h-[calc(var(--vw)*6)]
+                  md:w-[calc(var(--vw)*18)]
+                  md:h-[calc(var(--vw)*3)]
                   text-sm
                   md:text-lg"
                   value={confirmPassword}
@@ -198,7 +198,7 @@ export default function RegisterPage() {
               className="bg-black text-white border border-white px-4 py-2 rounded-xl
               inline-flex items-center justify-center
               w-fit
-              mobile-landscape:h-[6vw]
+              mobile-landscape:h-[calc(var(--vw)*6)]
               text-sm
               md:text-lg
               hover:bg-white hover:text-black hover:border-black
@@ -209,14 +209,14 @@ export default function RegisterPage() {
             {errorMessage && <p className="text-red-400 mb-2">{errorMessage}</p>}
           </div>
           {!isRegisterMode && (
-            <div className="flex flex-row items-center mt-[3vw]">
-              <p className="text-white mr-[1vw]
+            <div className="flex flex-row items-center mt-[calc(var(--vw)*3)]">
+              <p className="text-white mr-[calc(var(--vw)*1)]
               text-sm
               md:text-lg">Авторизуватись через</p>
               <button
-                className="w-[8vw] h-[8vw]
-                mobile-landscape:w-[5vw]
-                mobile-landscape:h-[5vw]
+                className="w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
+                mobile-landscape:w-[calc(var(--vw)*5)]
+                mobile-landscape:h-[calc(var(--vw)*5)]
                 md:w-[2.6vw]
                 md:h-[2.6vw]
                 transition-transform duration-300 hover:scale-110"
