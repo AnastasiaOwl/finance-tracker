@@ -5,17 +5,14 @@ import { Category } from "@/redux/categorySlice";
 import { AppDispatch } from "./store";
 
 export const addCategoryAsync =
-  (category: Omit<Category, "id">) => 
+  (category: Omit<Category, "id">) =>
   async (dispatch: AppDispatch) => {
-    try {
-      const docId = await addCategoryToFirestore(category);
-      const numericId = parseInt(docId, 10);
-      dispatch(addCategory({ ...category, id: numericId }));
-      return numericId;
-    } catch (error) {
-      console.error("❌ Error adding category:", error);
-      throw error;
-    }
+    const docId = await addCategoryToFirestore(
+      category as Category
+    );
+    const numericId = parseInt(docId, 10);
+    dispatch(addCategory({ ...category, id: numericId }));
+    return numericId;
   };
 
 export const deleteCategoryAsync = 
