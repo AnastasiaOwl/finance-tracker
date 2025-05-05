@@ -54,7 +54,9 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                                         <button
                                             className="rounded place-self-end relative 
                                             md:w-[2.2vw] 
-                                            md:h-[2.2vw]  "
+                                            md:h-[2.2vw]
+                                            lg:w-[1.5vw] 
+                                            lf:h-[1.5vw]  "
                                             onClick={() => toggleCategoryExpand(category)}
                                         >
                                           {expandedCategories[category] ? (
