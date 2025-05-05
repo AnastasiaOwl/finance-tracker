@@ -52,19 +52,18 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                                     <div>{category}</div>
                                     <div className="place-self-end">
                                         <button
-                                            className="rounded place-self-end"
+                                            className="rounded place-self-end relative 
+                                            md:w-[2.2vw] 
+                                            md:h-[2.2vw]  "
                                             onClick={() => toggleCategoryExpand(category)}
                                         >
                                           {expandedCategories[category] ? (
-                                            <Image src={collapseArrow} alt="collapse arrow" className="
-                                            md:p-2
-                                            md:w-[2.2vw]
-                                            md:h-[2.2vw]" />
+                                            <Image src={collapseArrow} 
+                                            alt="collapse arrow" fill
+                                            className="object-contain"/>
                                             ) : (
-                                            <Image src={expandArrow} alt="expand arrow" className="
-                                            md:p-2
-                                            md:w-[2.2vw]
-                                            md:h-[2.2vw]"/>
+                                            <Image src={expandArrow} alt="expand arrow" fill
+                                            className="object-contain"/>
                                             )}
                                         </button>
                                     </div>
