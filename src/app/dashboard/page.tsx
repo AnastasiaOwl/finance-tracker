@@ -218,23 +218,21 @@ export default function Dashboard() {
 
     return(
         <>
-        <header className="bg-black text-white py-4 vw-6
-         relative w-screen flex justify-between items-center
-         h-[calc(var(--vw)*10)]
-         mobile-landscape:h-[calc(var(--vw)*8)]
-         md:h-[4.5vw] ">
+        <header className="bg-black text-white py-4
+         relative flex justify-between items-center
+         md:w-[100%]
+         lg:h-[calc(var(--vw)*4)]
+         lg:w-creen">
             <select
                 value={selectedMonthIndex}
                 onChange={(e) => setSelectedMonthIndex(parseInt(e.target.value, 10))}
                 className="ml-4 mr-4 rounded-md border
-                            w-[calc(var(--vw)*30)]
-                            h-[calc(var(--vw)*8)]
                             text-xs
-                            mobile-landscape:w-[calc(var(--vw)*19)]
-                            mobile-landscape:h-[calc(var(--vw)*5)]
-                            md:text-base
-                            md:w-[calc(var(--vw)*8)]
-                            md:h-[calc(var(--vw)*2)]
+                            md:w-[calc(var(--vw)*12)]
+                            md:h-[calc(var(--vw)*3)]
+                            lg:text-base
+                            lg:w-[calc(var(--vw)*8)]
+                            lg:h-[calc(var(--vw)*2)]
                             border-white bg-black px-2 py-1 text-white focus:outline-none"
                 >
                 {monthsUA.map((month, idx) => (
@@ -284,65 +282,64 @@ export default function Dashboard() {
             <div className="
             fixed inset-0 z-50 flex items-center justify-center bg-black/50
             ">
-                <div className="w-[calc(var(--vw)*92)] max-w-md rounded-2xl bg-white p-4 shadow-xl flex flex-col items-center 
-                    mobile-landscape:w-[calc(var(--vw)*75)]
-                    mobile-landscape:h-fit
-                    mobile-landscape:p-1
-                    md:w-[calc(var(--vw)*92)]">
-                    <button className="flex place-self-end text-black mobile-landscape:mr-[calc(var(--vw)*1)] mobile-landscape:text-xs" onClick={() => setClearAll(false)}>X</button>
-                    <div className="w-full text-center mb-[calc(var(--vw)*1)]">Ви впевнені що хочете очистити всю інформацію по транзакціям за цей рік?</div>
-                    <button className="w-[calc(var(--vw)*10)] h-[calc(var(--vw)*2)]
-                                    mobile-landscape:w-[calc(var(--vw)*25)]
-                                    mobile-landscape:h-[calc(var(--vw)*5)]
-                                    mobile-landscape: mr-[calc(var(--vw)*1)]
-                                    mr-[0.5vw]
-                                    transition-transform 
-                                    duration-300 
-                                    hover:scale-110
-                                    bg-red-600
-                                    rounded-xl
-                                    text-white" onClick={()=>clearAllData()}>Підтверджую</button>
+                <div className="max-w-md rounded-2xl bg-white p-4 shadow-xl flex flex-col items-center 
+                    lg:w-[calc(var(--vw)*92)]">
+                    <button className="flex place-self-end text-black md:text-xs" onClick={() => setClearAll(false)}>X</button>
+                    <div className="w-full text-center text-black mb-[calc(var(--vw)*1)]">Ви впевнені що хочете очистити всю інформацію по транзакціям за цей рік?</div>
+                    <button className="
+                        lg:w-[calc(var(--vw)*10)] 
+                        lg:h-[calc(var(--vw)*2)]
+                        md:w-[calc(var(--vw)*14)] 
+                        md:h-[calc(var(--vw)*3)]
+                        mr-[0.5vw]
+                        transition-transform 
+                        duration-300 
+                        hover:scale-110
+                        bg-red-600
+                        rounded-xl
+                        text-white" onClick={()=>clearAllData()}>Підтверджую</button>
                 </div>
             </div>
         )}
         <main className="w-screen ">
             <div className="bg-gray-200 
-                            w-[calc(var(--vw)*95)]
-                            mobile-landscape:w-[calc(var(--vw)*95)]
-                            mobile-landscape:h-[calc(var(--vw)*12)]
-                            sm:w-[calc(var(--vw)*95)]
-                            flex gap-2
-                            md:gap-5
-                            md:gap-3 
-                            md:items-center 
-                            items-end
-                            rounded-[15px] p-1 m-3 justify-self-center shadow-md" >
-                <label className="flex text-xs  md:text-base flex-col items-center
-                        md:flex
-                        md:flex-row 
-                        md:items-center">
+                        md:w-[calc(var(--vw)*90)]
+                        lg:w-[calc(var(--vw)*95)]
+                        flex gap-2
+                        lg:gap-5
+                        lg:gap-3 
+                        lg:items-center 
+                        items-end
+                        rounded-[15px] p-1 m-3 justify-self-center shadow-md" >
+                <label className="flex text-sm flex-col items-center text-black
+                        lg:text-base
+                        lg:flex
+                        lg:flex-row 
+                        lg:items-center">
                         Тип
                         <select
                             value={selectedTypeKey}
                             onChange={(e) => setSelectedTypeKey(parseInt(e.target.value))}
                             className=" border rounded-md m-1
-                            mobile-landscape:w-[calc(var(--vw)*12)]
-                            mobile-landscape:h-[calc(var(--vw)*5)]
+                            text-xs 
                             md:p-2
                             md:m-2
-                            text-xs  md:text-base"
+                            lg:p-2
+                            lg:m-2
+                            lg:text-base"
                         >
                         {selectOptions.map((option) => (
-                        <option key={option.id} value={option.id} className="text-xs  md:text-base">
+                        <option key={option.id} value={option.id} className="text-xs  lg:text-base">
                             {option.value}
                         </option>
                         ))}
                         </select>
                 </label>
-                <label className="flex text-xs  md:text-base flex-col items-center
-                        md:flex
-                        md:flex-row 
-                        md:items-center">
+                <label className="flex text-sm flex-col items-center text-black
+                        lg:text-base
+                        lg:flex
+                        lg:flex-row 
+                        lg:items-center">
                     Категорія
                     {!showCustomInput ? (
                         <select
@@ -357,17 +354,18 @@ export default function Dashboard() {
                             }
                         }}
                         className=" border rounded-md m-1
-                            mobile-landscape:w-[calc(var(--vw)*28)]
-                            mobile-landscape:h-[calc(var(--vw)*5)]
-                            md:w-[calc(var(--vw)*14)]
+                            text-xs 
                             md:p-2
                             md:m-2
-                            text-xs  md:text-base"
+                            lg:p-2
+                            lg:m-2
+                            lg:text-base"
                         >
-                        <option value="" disabled className="flex text-xs  md:text-base flex-col items-center
-                        md:flex
-                        md:flex-row 
-                        md:items-center">
+                        <option value="" disabled className="flex text-sm flex-col items-center text-black
+                        lg:flex
+                        lg:flex-row 
+                        lg:items-center
+                        lg:text-base">
                         Виберіть категорію
                         </option>
                         {selectedCategories.map((option) => (
@@ -385,8 +383,6 @@ export default function Dashboard() {
                             value={customCategory}
                             onChange={(e) => setCustomCategory(e.target.value)}
                             className=" border rounded-md
-                            mobile-landscape:w-[calc(var(--vw)*21)]
-                            mobile-landscape:h-[calc(var(--vw)*5)]
                             md:p-2
                             md:w-[calc(var(--vw)*14)]"
                             />
@@ -417,45 +413,45 @@ export default function Dashboard() {
                         </div>
                         )}
                 </label>
-                <label className="flex text-xs  md:text-base flex-col items-center
-                        md:flex
-                        md:flex-row 
-                        md:items-center">
+                <label className="flex text-sm flex-col items-center text-black
+                        lg:text-base
+                        lg:flex
+                        lg:flex-row 
+                        lg:items-center">
                     Сума
-                   <input className=" border rounded-md m-1 w-[calc(var(--vw)*6)]
-                    mobile-landscape:w-[calc(var(--vw)*10)]
-                    mobile-landscape:h-[calc(var(--vw)*5)]
+                   <input className=" border rounded-md m-1
                     md:w-[calc(var(--vw)*6)]
+                    md:h-[calc(var(--vw)*4)]
                     md:p-2
                     md:m-2"
                    type = "number"
                    value= {amount}
                    onChange={(e) => setAmount(e.target.value)}></input>
                 </label>
-                <label className="flex text-xs  md:text-base flex-col items-center
-                        md:flex
-                        md:flex-row 
-                        md:items-center">
+                <label className="flex text-sm flex-col items-center text-black
+                        lg:flex
+                        lg:flex-row 
+                        lg:items-center
+                        lg:text-base">
                     Коментар
-                   <input className="p-2 border rounded-md m-1 w-[calc(var(--vw)*35)]
-                    mobile-landscape:w-[calc(var(--vw)*15)]
-                    mobile-landscape:h-[calc(var(--vw)*5)]
-                    md:w-[calc(var(--vw)*35)]
+                   <input className="p-2 border rounded-md m-1
+                    md:h-[calc(var(--vw)*4)]
+                    md:w-[calc(var(--vw)*30)]
                     md:p-2
-                    md:m-2" maxLength={40}
+                    md:m-2
+                    lg:w-[calc(var(--vw)*35)]" maxLength={40}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}></input>
                 </label>
                 <button className="bg-black text-white border border-white  py-2 rounded-xl
                       hover:bg-white hover:text-black hover:border-black
                       m-1
-                      mobile-landscape:w-[calc(var(--vw)*12)]
-                      mobile-landscape:h-[calc(var(--vw)*7)]
-                      md:text-base
-                      text-xs
-                      md:w-[calc(var(--vw)*7)]
-                      md:m-0
-                      md:px-4
+                      text-sm
+                      md:px-2
+                      lg:text-base
+                      lg:w-[calc(var(--vw)*7)]
+                      lg:m-0
+                      lg:px-4
                       transition-colors duration-300"
                 onClick={handleAddTransaction}>
                     Додати

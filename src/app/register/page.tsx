@@ -113,16 +113,18 @@ export default function RegisterPage() {
             md:mt-[calc(var(--vw)*0)]">
             <div className="flex flex-row items-center">
               <Image src={userIcon} alt="user" className="mr-[0.8vw]
-                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                md:w-[calc(var(--vw)*2)]
-                md:h-[calc(var(--vw)*2)]" />
+                md:w-[calc(var(--vw)*2.5)]
+                md:h-[calc(var(--vw)*2.5)]
+                lg:w-[calc(var(--vw)*2)]
+                lg:h-[calc(var(--vw)*2)]" />
               <input
                 type="email"
                 placeholder="Email"
                 className="p-2 border rounded 
-                w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                md:w-[calc(var(--vw)*18)]
-                md:h-[calc(var(--vw)*3)]
+                md:w-[calc(var(--vw)*25)]
+                md:h-[calc(var(--vw)*4)]
+                lg:w-[calc(var(--vw)*18)]
+                lg:h-[calc(var(--vw)*3)]
                 text-sm
                 md:text-lg"
                 value={email}
@@ -132,16 +134,18 @@ export default function RegisterPage() {
             </div>
             <div className="flex flex-row items-center">
               <Image src={passwordIcon} alt="password" className="mr-[0.8vw]
-                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                md:w-[calc(var(--vw)*2)]
-                md:h-[calc(var(--vw)*2)]"/>
+                md:w-[calc(var(--vw)*2.5)]
+                md:h-[calc(var(--vw)*2.5)]
+                lg:w-[calc(var(--vw)*2)]
+                lg:h-[calc(var(--vw)*2)]"/>
               <input
                 type="password"
                 placeholder="Password"
                 className="p-2 border rounded
-                w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                md:w-[calc(var(--vw)*18)]
-                md:h-[calc(var(--vw)*3)]
+                md:w-[calc(var(--vw)*25)]
+                md:h-[calc(var(--vw)*4)]
+                lg:w-[calc(var(--vw)*18)]
+                lg:h-[calc(var(--vw)*3)]
                 text-sm
                 md:text-lg"
                 value={password}
@@ -152,16 +156,18 @@ export default function RegisterPage() {
               {isRegisterMode && (
               <div className="flex items-center mb-3">
                 <Image src={passwordCheckIcon} alt="password" className="mr-2
-                w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                md:w-[calc(var(--vw)*2)]
-                md:h-[calc(var(--vw)*2)]" />
+                md:w-[calc(var(--vw)*2.5)]
+                md:h-[calc(var(--vw)*2.5)]
+                lg:w-[calc(var(--vw)*2)]
+                lg:h-[calc(var(--vw)*2)]" />
                 <input
                   type="password"
                   placeholder="Confirm Password"
                   className="p-2 border rounded    
-                  w-[calc(var(--vw)*46)] h-[calc(var(--vw)*10)]
-                  md:w-[calc(var(--vw)*18)]
-                  md:h-[calc(var(--vw)*3)]
+                  md:w-[calc(var(--vw)*25)]
+                  md:h-[calc(var(--vw)*4)]
+                  lg:w-[calc(var(--vw)*18)]
+                  lg:h-[calc(var(--vw)*3)]
                   text-sm
                   md:text-lg"
                   value={confirmPassword}
@@ -193,9 +199,11 @@ export default function RegisterPage() {
               text-sm
               md:text-lg">Авторизуватись через</p>
               <button
-                className="w-[calc(var(--vw)*8)] h-[calc(var(--vw)*8)]
-                md:w-[2.6vw]
-                md:h-[2.6vw]
+                className="
+                md:w-[3.5vw]
+                md:h-[3.5vw]
+                lg:w-[2.6vw]
+                lg:h-[2.6vw]
                 transition-transform duration-300 hover:scale-110"
                 onClick={handleRegisterGoogle}
               >
